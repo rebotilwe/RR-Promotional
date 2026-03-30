@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0A0A0A;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C9A84C66;
+  border-radius: 3px;
+}
+
+input, textarea, select {
+  color-scheme: dark;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #444;
+}
+
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+}
