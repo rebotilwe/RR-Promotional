@@ -4,22 +4,23 @@ import logo from './assets/logo.jpeg';
 
 const GOLD = "#C9A84C";
 const GOLD_LIGHT = "#E8C96A";
-const DARK = "#0A0A0A";
-const DARK2 = "#111111";
-const DARK3 = "#1A1A1A";
+const DARK = "#0f0e0a";
+const DARK2 = "#161510";
+const DARK3 = "#1e1c14";
+const DARK_WARM = "#1a1810";
 
-const NAV_LINKS = ["Home", "About", "Products", "Gallery", "Contact"];
+const PAGES = ["Home", "About", "Products", "Gallery", "Values", "Contact"];
 
 const PRODUCTS = [
-  { name: "Conference Bags", icon: "💼", desc: "Premium corporate conference bags tailored for your brand." },
-  { name: "Cooler Bags", icon: "🧊", desc: "Insulated cooler bags with custom branding options." },
-  { name: "School Backpacks", icon: "🎒", desc: "Durable school backpacks manufactured to SABS standards." },
-  { name: "School Tog Bags", icon: "🏫", desc: "Spacious tog bags ideal for learners at all levels." },
-  { name: "Promo Backpacks", icon: "🎽", desc: "Eye-catching promotional backpacks for campaigns." },
-  { name: "Shopping Bags", icon: "🛍️", desc: "Reusable branded shopping bags for retail and events." },
-  { name: "Handbags", icon: "👜", desc: "Stylish handbags manufactured to client specifications." },
-  { name: "Tog Bags", icon: "🗃️", desc: "Versatile tog bags for corporate gifting and sports." },
-  { name: "Miscellaneous", icon: "📦", desc: "Custom solutions for any bag type or specification." },
+  { name: "Conference Bags", icon: "💼", desc: "Premium corporate conference bags tailored for your brand.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Conference+Bag" },
+  { name: "Cooler Bags", icon: "🧊", desc: "Insulated cooler bags with custom branding options.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Cooler+Bag" },
+  { name: "School Backpacks", icon: "🎒", desc: "Durable school backpacks manufactured to SABS standards.", image: "https://placehold.co/600x400/f5f5f5/999999?text=School+Backpack" },
+  { name: "School Tog Bags", icon: "🏫", desc: "Spacious tog bags ideal for learners at all levels.", image: "https://placehold.co/600x400/f5f5f5/999999?text=School+Tog+Bag" },
+  { name: "Promo Backpacks", icon: "🎽", desc: "Eye-catching promotional backpacks for campaigns.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Promo+Backpack" },
+  { name: "Shopping Bags", icon: "🛍️", desc: "Reusable branded shopping bags for retail and events.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Shopping+Bag" },
+  { name: "Handbags", icon: "👜", desc: "Stylish handbags manufactured to client specifications.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Handbag" },
+  { name: "Tog Bags", icon: "🗃️", desc: "Versatile tog bags for corporate gifting and sports.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Tog+Bag" },
+  { name: "Miscellaneous", icon: "📦", desc: "Custom solutions for any bag type or specification.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Custom+Bags" },
 ];
 
 const STATS = [
@@ -31,37 +32,42 @@ const STATS = [
 
 const BRANDING = ["Logo Printing", "Embroidery", "Plain (No Branding)"];
 const BAG_TYPES = PRODUCTS.map((p) => p.name);
+const WHATSAPP_NUMBER = "27834436915";
 
-// WhatsApp number (international format, no +)
-const WHATSAPP_NUMBER = "27834681719";
-
-// Custom hook for scroll animations
-function useInView(threshold = 0.15) {
+// ── Scroll animation hook ───────────────────────────────────────────────────
+function useInView(threshold = 0.12) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setInView(true); },
+      { threshold }
+    );
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
   return [ref, inView];
 }
 
-// Crown SVG component
-function Crown({ size = 40 }) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+// ── Responsive window width hook ───────────────────────────────────────────
+function useWindowWidth() {
+  const [w, setW] = useState(window.innerWidth);
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const fn = () => setW(window.innerWidth);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
   }, []);
-  
-  const responsiveSize = windowWidth <= 480 ? size * 0.7 : windowWidth <= 768 ? size * 0.85 : size;
-  
+  return w;
+}
+
+// ── Crown SVG ──────────────────────────────────────────────────────────────
+function Crown({ size = 40 }) {
+  const w = useWindowWidth();
+  const s = w <= 480 ? size * 0.7 : w <= 768 ? size * 0.85 : size;
   return (
-    <svg width={responsiveSize} height={responsiveSize * 0.7} viewBox="0 0 60 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={s} height={s * 0.7} viewBox="0 0 60 42" fill="none">
       <polygon points="0,42 10,10 30,28 50,10 60,42" fill={GOLD} opacity="0.9" />
       <circle cx="0" cy="10" r="4" fill={GOLD_LIGHT} />
       <circle cx="30" cy="4" r="5" fill={GOLD_LIGHT} />
@@ -71,150 +77,123 @@ function Crown({ size = 40 }) {
   );
 }
 
-// Gold Divider
+// ── Gold Divider ────────────────────────────────────────────────────────────
 function GoldDivider() {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const crownSize = windowWidth <= 480 ? 16 : 24;
-  
+  const w = useWindowWidth();
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: windowWidth <= 480 ? 6 : 12, margin: windowWidth <= 480 ? "12px 0" : "16px 0" }} className="gold-divider">
+    <div style={{ display: "flex", alignItems: "center", gap: w <= 480 ? 6 : 12, margin: w <= 480 ? "12px 0" : "18px 0" }}>
       <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, transparent, ${GOLD})` }} />
-      <Crown size={crownSize} />
+      <Crown size={w <= 480 ? 16 : 22} />
       <div style={{ flex: 1, height: 1, background: `linear-gradient(to left, transparent, ${GOLD})` }} />
     </div>
   );
 }
 
-// Section Label
+// ── Section Label ───────────────────────────────────────────────────────────
 function SectionLabel({ children }) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const fontSize = windowWidth <= 480 ? 9 : windowWidth <= 768 ? 10 : 11;
-  const letterSpacing = windowWidth <= 480 ? "0.2em" : "0.3em";
-  
+  const w = useWindowWidth();
   return (
     <p style={{
-      letterSpacing: letterSpacing, fontSize: fontSize, fontWeight: 700,
-      color: GOLD, textTransform: "uppercase", marginBottom: windowWidth <= 480 ? 8 : 12,
-      fontFamily: "'Montserrat', sans-serif"
-    }} className="section-label">{children}</p>
+      letterSpacing: w <= 480 ? "0.2em" : "0.35em",
+      fontSize: w <= 480 ? 9 : 11, fontWeight: 700,
+      color: GOLD, textTransform: "uppercase",
+      marginBottom: w <= 480 ? 8 : 12,
+      fontFamily: "'Montserrat', sans-serif",
+      textAlign: "center",
+    }}>{children}</p>
   );
 }
 
-// Heading
-function Heading({ children, size = 40, center = false }) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  let responsiveSize = size;
-  if (windowWidth <= 320) responsiveSize = size * 0.5;
-  else if (windowWidth <= 480) responsiveSize = size * 0.6;
-  else if (windowWidth <= 768) responsiveSize = size * 0.8;
-  
+// ── Heading ─────────────────────────────────────────────────────────────────
+function Heading({ children, size = 40 }) {
+  const w = useWindowWidth();
+  let s = size;
+  if (w <= 320) s = size * 0.5;
+  else if (w <= 480) s = size * 0.62;
+  else if (w <= 768) s = size * 0.82;
   return (
     <h2 style={{
       fontFamily: "'Playfair Display', Georgia, serif",
-      fontSize: responsiveSize, fontWeight: 800, lineHeight: 1.2,
-      color: "#fff",
-      textAlign: center ? "center" : "left",
-      margin: 0,
+      fontSize: s, fontWeight: 800, lineHeight: 1.2,
+      color: "#fff", textAlign: "center", margin: 0,
     }}>{children}</h2>
   );
 }
 
-// Navigation with Mobile Menu
-function Nav() {
+// ── Global keyframes injected once ─────────────────────────────────────────
+const KEYFRAMES = `
+  @keyframes pulse { 0%,100%{opacity:.35;transform:scale(1)} 50%{opacity:.7;transform:scale(1.06)} }
+  @keyframes float { 0%,100%{transform:translate(50%,-50%) translateY(0)} 50%{transform:translate(50%,-50%) translateY(-18px)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+`;
+
+// ── Navigation ──────────────────────────────────────────────────────────────
+function Nav({ activePage, setActivePage }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  
+  const w = useWindowWidth();
+
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
-    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("scroll", fn);
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("scroll", fn);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const scrollTo = (id) => {
+  const goTo = (page) => {
+    setActivePage(page);
     setMobileOpen(false);
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const isMobile = windowWidth <= 768;
-  const logoSize = windowWidth <= 480 ? 30 : 40;
-  const fontSize = windowWidth <= 480 ? 14 : 18;
+  const isMobile = w <= 768;
+  const logoH = w <= 480 ? 30 : 40;
 
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      background: scrolled ? "rgba(10,10,10,0.97)" : "transparent",
-      backdropFilter: scrolled ? "blur(12px)" : "none",
-      borderBottom: scrolled ? `1px solid ${GOLD}22` : "none",
+      background: scrolled ? "rgba(15,14,10,0.97)" : "transparent",
+      backdropFilter: scrolled ? "blur(14px)" : "none",
+      borderBottom: scrolled ? `1px solid ${GOLD}25` : "none",
       transition: "all 0.4s ease",
-      padding: windowWidth <= 480 ? "0 3%" : "0 5%",
+      padding: w <= 480 ? "0 3%" : "0 5%",
     }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: windowWidth <= 480 ? 60 : 72 }}>
-        {/* Logo Section */}
-        <div style={{ display: "flex", alignItems: "center", gap: windowWidth <= 480 ? 8 : 12, cursor: "pointer" }} onClick={() => scrollTo("home")}>
-          <img 
-            src={logo} 
-            alt="RR Promotional Logo" 
-            style={{ 
-              height: logoSize, 
-              width: 'auto', 
-              objectFit: 'contain',
-              borderRadius: 4,
-            }} 
-          />
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: w <= 480 ? 60 : 72 }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: w <= 480 ? 8 : 12, cursor: "pointer" }} onClick={() => goTo("Home")}>
+          <img src={logo} alt="RR Logo" style={{ height: logoH, width: "auto", objectFit: "contain", borderRadius: 4 }} />
           <div>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: fontSize, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", lineHeight: 1.2 }}>RR PROMOTIONAL</div>
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 7 : 9, letterSpacing: windowWidth <= 480 ? "0.2em" : "0.35em", color: GOLD, fontWeight: 700 }}>BAG MANUFACTURERS</div>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 17, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", lineHeight: 1.2 }}>RR PROMOTIONAL</div>
+            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 7 : 9, letterSpacing: w <= 480 ? "0.2em" : "0.35em", color: GOLD, fontWeight: 700 }}>BAG MANUFACTURERS</div>
           </div>
         </div>
 
-        {/* Desktop Navigation */}
+        {/* Desktop nav links */}
         {!isMobile && (
-          <div style={{ display: "flex", gap: windowWidth <= 1024 ? 20 : 32 }}>
-            {NAV_LINKS.map(l => (
-              <button key={l} onClick={() => scrollTo(l)} style={{
+          <div style={{ display: "flex", gap: w <= 1024 ? 18 : 28 }}>
+            {PAGES.map(p => (
+              <button key={p} onClick={() => goTo(p)} style={{
                 background: "none", border: "none", cursor: "pointer",
-                fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 1024 ? 10 : 12, fontWeight: 600,
-                letterSpacing: "0.15em", color: "#ccc", textTransform: "uppercase",
-                transition: "color 0.2s",
+                fontFamily: "'Montserrat', sans-serif", fontSize: w <= 1024 ? 10 : 11, fontWeight: 600,
+                letterSpacing: "0.15em", textTransform: "uppercase",
+                color: activePage === p ? GOLD : "#bbb",
+                borderBottom: activePage === p ? `1px solid ${GOLD}` : "1px solid transparent",
+                paddingBottom: 2, transition: "color 0.2s, border-color 0.2s",
               }}
                 onMouseEnter={e => e.target.style.color = GOLD}
-                onMouseLeave={e => e.target.style.color = "#ccc"}
-              >{l}</button>
+                onMouseLeave={e => e.target.style.color = activePage === p ? GOLD : "#bbb"}
+              >{p}</button>
             ))}
           </div>
         )}
 
-        {/* Desktop Get Quote Button */}
+        {/* Desktop CTA */}
         {!isMobile && (
-          <button onClick={() => scrollTo("contact")} style={{
+          <button onClick={() => goTo("Contact")} style={{
             background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
             border: "none", borderRadius: 2, cursor: "pointer",
-            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 1024 ? 10 : 11, fontWeight: 700,
-            letterSpacing: "0.15em", color: DARK, padding: windowWidth <= 1024 ? "8px 18px" : "10px 22px",
+            fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 700,
+            letterSpacing: "0.15em", color: DARK, padding: "10px 22px",
             textTransform: "uppercase", transition: "opacity 0.2s",
           }}
             onMouseEnter={e => e.target.style.opacity = "0.85"}
@@ -222,46 +201,36 @@ function Nav() {
           >Get Quote</button>
         )}
 
-        {/* Mobile Menu Button */}
+        {/* Mobile hamburger */}
         {isMobile && (
-          <div style={{ position: 'relative' }}>
-            <button onClick={() => setMobileOpen(!mobileOpen)} style={{
-              background: 'none', border: 'none', color: '#ccc', fontSize: windowWidth <= 480 ? 24 : 28, cursor: 'pointer',
-              padding: windowWidth <= 480 ? '6px' : '8px'
-            }}>
-              ☰
+          <div style={{ position: "relative" }}>
+            <button onClick={() => setMobileOpen(!mobileOpen)} style={{ background: "none", border: "none", color: "#ccc", fontSize: w <= 480 ? 24 : 28, cursor: "pointer", padding: "6px" }}>
+              {mobileOpen ? "✕" : "☰"}
             </button>
             {mobileOpen && (
               <div style={{
-                position: 'absolute', top: '100%', right: 0, background: 'rgba(10,10,10,0.98)',
-                backdropFilter: 'blur(12px)', padding: windowWidth <= 480 ? '16px' : '20px', borderRadius: '0 0 8px 8px',
-                borderLeft: `2px solid ${GOLD}`, minWidth: windowWidth <= 480 ? '180px' : '200px', boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+                position: "absolute", top: "100%", right: 0,
+                background: "rgba(15,14,10,0.98)", backdropFilter: "blur(14px)",
+                padding: w <= 480 ? "16px" : "20px", borderRadius: "0 0 8px 8px",
+                borderLeft: `2px solid ${GOLD}`, minWidth: 200,
+                boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
               }}>
-                {NAV_LINKS.map(l => (
-                  <button key={l} onClick={() => {scrollTo(l); setMobileOpen(false);}} 
-                    style={{
-                      display: 'block', width: '100%', textAlign: 'left', marginBottom: windowWidth <= 480 ? '12px' : '16px',
-                      background: 'none', border: 'none', color: '#ccc', fontSize: windowWidth <= 480 ? 12 : 14,
-                      fontWeight: 600, letterSpacing: '0.1em', padding: windowWidth <= 480 ? '6px 0' : '8px 0', cursor: 'pointer'
-                    }}
-                    onMouseEnter={e => e.target.style.color = GOLD}
-                    onMouseLeave={e => e.target.style.color = "#ccc"}
-                  >
-                    {l}
-                  </button>
+                {PAGES.map(p => (
+                  <button key={p} onClick={() => goTo(p)} style={{
+                    display: "block", width: "100%", textAlign: "left",
+                    marginBottom: 14, background: "none", border: "none",
+                    color: activePage === p ? GOLD : "#ccc",
+                    fontSize: w <= 480 ? 12 : 14, fontWeight: 600,
+                    letterSpacing: "0.1em", padding: "6px 0", cursor: "pointer",
+                  }}>{p}</button>
                 ))}
-                <button onClick={() => {scrollTo('contact'); setMobileOpen(false);}} 
-                  style={{
-                    display: 'block', width: '100%', textAlign: 'left', marginTop: windowWidth <= 480 ? '4px' : '8px',
-                    background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
-                    border: "none", borderRadius: 2, cursor: "pointer",
-                    fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 11, fontWeight: 700,
-                    letterSpacing: "0.15em", color: DARK, padding: windowWidth <= 480 ? "8px 12px" : "10px 16px",
-                    textTransform: "uppercase"
-                  }}
-                >
-                  Get Quote
-                </button>
+                <button onClick={() => goTo("Contact")} style={{
+                  display: "block", width: "100%", marginTop: 8,
+                  background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
+                  border: "none", borderRadius: 2, cursor: "pointer",
+                  fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 700,
+                  letterSpacing: "0.15em", color: DARK, padding: "10px 16px", textTransform: "uppercase",
+                }}>Get Quote</button>
               </div>
             )}
           </div>
@@ -271,56 +240,42 @@ function Nav() {
   );
 }
 
-// Hero Section
-function Hero() {
+// ── HOME PAGE ───────────────────────────────────────────────────────────────
+function HomePage({ setActivePage }) {
   const [loaded, setLoaded] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  
-  useEffect(() => {
-    setTimeout(() => setLoaded(true), 100);
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const headingSize = windowWidth > 768 ? 58 : windowWidth > 480 ? 42 : 32;
-  const padding = windowWidth <= 480 ? "100px 4% 60px" : windowWidth <= 768 ? "120px 5% 80px" : "120px 5% 80px";
+  const w = useWindowWidth();
+  useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
+
+  const hSize = w > 768 ? 58 : w > 480 ? 44 : 34;
 
   return (
-    <section id="home" style={{
+    <section style={{
       minHeight: "100vh", display: "flex", alignItems: "center",
-      background: `radial-gradient(ellipse at 70% 50%, #1a1400 0%, ${DARK} 60%)`,
-      position: "relative", overflow: "hidden", padding: padding,
+      background: `radial-gradient(ellipse at 60% 40%, #2e2710 0%, ${DARK_WARM} 55%, ${DARK} 100%)`,
+      position: "relative", overflow: "hidden",
+      padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px",
     }}>
-      <div style={{
-        position: "absolute", inset: 0, opacity: 0.04,
-        backgroundImage: `linear-gradient(${GOLD} 1px, transparent 1px), linear-gradient(90deg, ${GOLD} 1px, transparent 1px)`,
-        backgroundSize: windowWidth <= 480 ? "40px 40px" : "60px 60px",
-      }} />
-      <div style={{
-        position: "absolute", right: "5%", top: "20%",
-        width: windowWidth <= 480 ? 200 : 500, height: windowWidth <= 480 ? 200 : 500, borderRadius: "50%",
-        background: `radial-gradient(circle, ${GOLD}18 0%, transparent 70%)`,
-        pointerEvents: "none",
-      }} />
-      {windowWidth > 768 && [320, 420, 520].map((s, i) => (
-        <div key={i} style={{
-          position: "absolute", right: "12%", top: "50%",
-          transform: "translate(50%, -50%)",
-          width: s, height: s, borderRadius: "50%",
-          border: `1px solid ${GOLD}${["33", "22", "11"][i]}`,
-          pointerEvents: "none",
-        }} />
+      <style>{KEYFRAMES}</style>
+
+      {/* Warm radial glow */}
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 65% 45%, ${GOLD}10 0%, transparent 65%)`, pointerEvents: "none" }} />
+
+      {/* Subtle grid */}
+      <div style={{ position: "absolute", inset: 0, opacity: 0.025, backgroundImage: `linear-gradient(${GOLD} 1px, transparent 1px), linear-gradient(90deg, ${GOLD} 1px, transparent 1px)`, backgroundSize: w <= 480 ? "40px 40px" : "56px 56px" }} />
+
+      {/* Pulsing orb */}
+      <div style={{ position: "absolute", right: "5%", top: "18%", width: w <= 480 ? 180 : 460, height: w <= 480 ? 180 : 460, borderRadius: "50%", background: `radial-gradient(circle, ${GOLD}1a 0%, transparent 70%)`, animation: "pulse 9s ease-in-out infinite", pointerEvents: "none" }} />
+
+      {/* Floating rings */}
+      {w > 768 && [300, 400, 500].map((s, i) => (
+        <div key={i} style={{ position: "absolute", right: "12%", top: "50%", transform: "translate(50%, -50%)", width: s, height: s, borderRadius: "50%", border: `1px solid ${GOLD}${["30", "20", "10"][i]}`, animation: `float ${10 + i * 2}s ease-in-out infinite`, pointerEvents: "none" }} />
       ))}
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", position: "relative", zIndex: 2 }}>
-        <div style={{
-          opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(30px)",
-          transition: "all 0.9s cubic-bezier(0.22,1,0.36,1)",
-        }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", position: "relative", zIndex: 2, textAlign: "center" }}>
+        <div style={{ opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(28px)", transition: "all 0.9s cubic-bezier(0.22,1,0.36,1)" }}>
           <SectionLabel>Est. 2003 · Mount Edgecombe, KZN</SectionLabel>
-          <div style={{ maxWidth: windowWidth <= 480 ? "100%" : 680 }}>
-            <Heading size={headingSize}>
+          <div style={{ maxWidth: 760, margin: "0 auto" }}>
+            <Heading size={hSize}>
               Premium Custom<br />
               <span style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 Bag Manufacturers
@@ -328,47 +283,40 @@ function Hero() {
             </Heading>
           </div>
           <GoldDivider />
-          <p style={{
-            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 14 : 16, lineHeight: 1.7,
-            color: "#aaa", maxWidth: windowWidth <= 480 ? "100%" : 540, marginBottom: windowWidth <= 480 ? 24 : 40,
-          }}>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 16, lineHeight: 1.75, color: "#bbb", maxWidth: 620, margin: "0 auto 36px", textAlign: "center" }}>
             From corporate branding to school essentials — we manufacture to your exact specifications.
-            70 skilled staff. SABS-tested materials. In-house screen printing & embroidery.
+            70 skilled staff · SABS-tested materials · In-house screen printing &amp; embroidery.
           </p>
 
-          <div style={{ display: "flex", gap: windowWidth <= 480 ? 12 : 16, flexWrap: "wrap" }} className="hero-buttons">
-            <button onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })} style={{
+          <div style={{ display: "flex", gap: w <= 480 ? 12 : 16, flexWrap: "wrap", justifyContent: "center" }}>
+            <button onClick={() => setActivePage("Contact")} style={{
               background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
               border: "none", borderRadius: 2, cursor: "pointer",
-              fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, fontWeight: 700,
-              letterSpacing: "0.15em", color: DARK, padding: windowWidth <= 480 ? "12px 24px" : "16px 36px",
-              textTransform: "uppercase", transition: "transform 0.2s, opacity 0.2s", width: windowWidth <= 375 ? "100%" : "auto",
+              fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, fontWeight: 700,
+              letterSpacing: "0.15em", color: DARK, padding: w <= 480 ? "12px 24px" : "15px 34px",
+              textTransform: "uppercase", transition: "transform 0.2s",
             }}
               onMouseEnter={e => e.target.style.transform = "translateY(-2px)"}
               onMouseLeave={e => e.target.style.transform = "none"}
             >Request a Quote</button>
 
-            <button onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })} style={{
-              background: "transparent",
-              border: `1px solid ${GOLD}66`, borderRadius: 2, cursor: "pointer",
-              fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, fontWeight: 600,
-              letterSpacing: "0.15em", color: GOLD, padding: windowWidth <= 480 ? "12px 24px" : "16px 36px",
-              textTransform: "uppercase", transition: "border-color 0.2s, background 0.2s", width: windowWidth <= 375 ? "100%" : "auto",
+            <button onClick={() => setActivePage("Products")} style={{
+              background: "transparent", border: `1px solid ${GOLD}66`, borderRadius: 2, cursor: "pointer",
+              fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, fontWeight: 600,
+              letterSpacing: "0.15em", color: GOLD, padding: w <= 480 ? "12px 24px" : "15px 34px",
+              textTransform: "uppercase", transition: "border-color 0.2s, background 0.2s",
             }}
               onMouseEnter={e => { e.target.style.borderColor = GOLD; e.target.style.background = `${GOLD}11`; }}
               onMouseLeave={e => { e.target.style.borderColor = `${GOLD}66`; e.target.style.background = "transparent"; }}
             >Our Products</button>
           </div>
 
-          <div style={{
-            display: "flex", gap: windowWidth <= 480 ? 20 : windowWidth <= 768 ? 32 : 48, flexWrap: "wrap", marginTop: windowWidth <= 480 ? 48 : 72,
-            paddingTop: windowWidth <= 480 ? 24 : 40, borderTop: `1px solid ${GOLD}22`, flexDirection: windowWidth <= 375 ? "column" : "row",
-            alignItems: windowWidth <= 375 ? "center" : "flex-start", textAlign: windowWidth <= 375 ? "center" : "left",
-          }} className="stats-container">
+          {/* Stats */}
+          <div style={{ display: "flex", gap: w <= 480 ? 20 : 44, flexWrap: "wrap", marginTop: w <= 480 ? 44 : 68, paddingTop: w <= 480 ? 24 : 36, borderTop: `1px solid ${GOLD}20`, justifyContent: "center" }}>
             {STATS.map(s => (
-              <div key={s.label} className="stats-item">
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 24 : windowWidth <= 768 ? 28 : 32, fontWeight: 800, color: GOLD }}>{s.num}</div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 8 : 10, letterSpacing: "0.2em", color: "#888", textTransform: "uppercase" }}>{s.label}</div>
+              <div key={s.label} style={{ textAlign: "center" }}>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 24 : 32, fontWeight: 800, color: GOLD }}>{s.num}</div>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 8 : 10, letterSpacing: "0.2em", color: "#777", textTransform: "uppercase" }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -378,97 +326,436 @@ function Hero() {
   );
 }
 
-// About Section
-function About() {
+// ── ABOUT PAGE ──────────────────────────────────────────────────────────────
+function AboutPage() {
   const [ref, inView] = useInView();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const isMobile = windowWidth <= 768;
-  const gap = windowWidth <= 480 ? 40 : 80;
+  const w = useWindowWidth();
 
   return (
-    <section id="about" ref={ref} style={{
-      padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%",
-      background: DARK2,
-      position: "relative", overflow: "hidden",
-    }}>
-      {windowWidth > 768 && (
-        <div style={{
-          position: "absolute", left: 0, top: 0, bottom: 0, width: 4,
-          background: `linear-gradient(to bottom, transparent, ${GOLD}, transparent)`,
-        }} />
-      )}
+    <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(160deg, ${DARK_WARM} 0%, ${DARK} 100%)`, position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 25% 40%, ${GOLD}07 0%, transparent 60%)`, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: gap, alignItems: "center" }} className="about-grid">
-        <div style={{
-          opacity: inView ? 1 : 0, transform: inView ? "none" : "translateX(-40px)",
-          transition: "all 0.8s cubic-bezier(0.22,1,0.36,1)",
-          textAlign: isMobile ? "center" : "left",
-        }}>
-          <SectionLabel>Who We Are</SectionLabel>
-          <Heading size={42}>Crafting Excellence<br /><span style={{ color: GOLD }}>Since 2003</span></Heading>
-          <GoldDivider />
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15, lineHeight: 1.8, color: "#999", marginBottom: 24 }}>
-            RR Promotional Bag Manufacturers (T/A RML) has been a cornerstone of quality bag manufacturing for over 20 years.
-            Based at our state-of-the-art facility in <strong style={{ color: "#ccc" }}>Mount Edgecombe, KZN</strong>, we serve corporate clients, schools, and promotional agencies across South Africa.
-          </p>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15, lineHeight: 1.8, color: "#999", marginBottom: 32 }}>
-            Our <strong style={{ color: "#ccc" }}>70-person production team</strong> works alongside a specialized design studio to bring every specification to life — whether from a physical sample or a technical drawing. All materials are tested to <strong style={{ color: "#ccc" }}>SABS standards</strong>.
-          </p>
+      <div ref={ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(28px)", transition: "all 0.8s cubic-bezier(0.22,1,0.36,1)" }}>
+        <SectionLabel>Who We Are</SectionLabel>
+        <Heading size={44}>Crafting Excellence<br /><span style={{ color: GOLD }}>Since 2003</span></Heading>
+        <GoldDivider />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: isMobile ? "center" : "flex-start" }}>
-            {[
-              "In-house screen printing & embroidery facility",
-              "Custom manufacturing from drawings or samples",
-              "Committed to skills development & social upliftment",
-              "Cost-effective without compromising quality",
-            ].map(item => (
-              <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 12, textAlign: isMobile ? "center" : "left", justifyContent: isMobile ? "center" : "flex-start" }}>
-                <span style={{ color: GOLD, fontSize: 16, marginTop: 2 }}>◆</span>
-                <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 12 : 14, color: "#aaa", lineHeight: 1.6 }}>{item}</span>
-              </div>
-            ))}
-          </div>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, lineHeight: 1.85, color: "#999", maxWidth: 780, margin: "0 auto 24px" }}>
+          RR Promotional Bag Manufacturers (T/A RML) has been a cornerstone of quality bag manufacturing for over 20 years.
+          Based at our state-of-the-art facility in <strong style={{ color: "#ddd" }}>Mount Edgecombe, KZN</strong>, we serve corporate clients, schools, and promotional agencies across South Africa.
+        </p>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, lineHeight: 1.85, color: "#999", maxWidth: 780, margin: "0 auto 40px" }}>
+          Our <strong style={{ color: "#ddd" }}>70-person production team</strong> works alongside a specialized design studio to bring every specification to life — whether from a physical sample or a technical drawing. All materials are tested to <strong style={{ color: "#ddd" }}>SABS standards</strong>.
+        </p>
+
+        {/* Feature bullets */}
+        <div style={{ display: "grid", gridTemplateColumns: w <= 600 ? "1fr" : "1fr 1fr", gap: 16, maxWidth: 700, margin: "0 auto 48px", textAlign: "left" }}>
+          {[
+            "In-house screen printing & embroidery facility",
+            "Custom manufacturing from drawings or samples",
+            "Committed to skills development & social upliftment",
+            "Cost-effective without compromising quality",
+          ].map((item, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, background: DARK3, border: `1px solid ${GOLD}20`, borderRadius: 4, padding: "16px 20px" }}>
+              <span style={{ color: GOLD, fontSize: 14, marginTop: 2, flexShrink: 0 }}>◆</span>
+              <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 13, color: "#aaa", lineHeight: 1.6 }}>{item}</span>
+            </div>
+          ))}
         </div>
 
-        <div style={{
-          opacity: inView ? 1 : 0, transform: inView ? "none" : "translateX(40px)",
-          transition: "all 0.8s cubic-bezier(0.22,1,0.36,1) 0.2s",
-          position: "relative",
-          marginTop: isMobile ? 40 : 0,
+        {/* Mission card */}
+        <div style={{ background: DARK3, border: `1px solid ${GOLD}33`, borderRadius: 4, padding: w <= 480 ? 28 : 48, position: "relative", maxWidth: 680, margin: "0 auto" }}>
+          <div style={{ position: "absolute", top: -1, left: 60, right: 60, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
+          <Crown size={w <= 480 ? 30 : 44} />
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 16 : 19, lineHeight: 1.75, color: "#ccc", fontStyle: "italic", margin: "20px 0 0" }}>
+            "Our mission is to provide customers with the highest possible quality in the most cost-effective manner."
+          </p>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginTop: 20, marginBottom: 0 }}>Our Mission</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── PRODUCTS PAGE ────────────────────────────────────────────────────────────
+function ProductsPage({ setActivePage }) {
+  const [ref, inView] = useInView(0.05);
+  const w = useWindowWidth();
+
+  return (
+    <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(170deg, ${DARK} 0%, ${DARK_WARM} 100%)` }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: w <= 480 ? 40 : 60 }}>
+          <SectionLabel>What We Manufacture</SectionLabel>
+          <Heading size={44}>Our Product Range</Heading>
+          <GoldDivider />
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, color: "#888", maxWidth: 560, margin: "0 auto" }}>
+            Every bag custom-built to your exact specifications, branding, and dimensions. Click any product to request a quote.
+          </p>
+        </div>
+
+        <div ref={ref} style={{ display: "grid", gridTemplateColumns: w <= 480 ? "1fr" : w <= 768 ? "repeat(2,1fr)" : "repeat(3,1fr)", gap: w <= 480 ? 16 : 24 }}>
+          {PRODUCTS.map((p, i) => {
+            const [hov, setHov] = useState(false);
+            return (
+              <div key={p.name}
+                onMouseEnter={() => setHov(true)}
+                onMouseLeave={() => setHov(false)}
+                onClick={() => { setActivePage("Contact"); window.scrollTo({ top: 0 }); }}
+                style={{
+                  background: hov ? DARK3 : "#100f0c",
+                  border: `1px solid ${hov ? GOLD + "70" : GOLD + "20"}`,
+                  borderRadius: 6, cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  opacity: inView ? 1 : 0,
+                  transform: inView ? "none" : "translateY(22px)",
+                  transitionDelay: `${i * 55}ms`,
+                  overflow: "hidden",
+                }}
+              >
+                {/* Image */}
+                <div style={{ position: "relative", height: w <= 480 ? 140 : 170, background: "#f5f5f5", overflow: "hidden" }}>
+                  <img src={p.image} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", top: 10, left: 10, background: `${GOLD}EE`, color: DARK, padding: "4px 10px", borderRadius: 3, fontSize: w <= 480 ? 8 : 9, fontWeight: 800, fontFamily: "'Montserrat', sans-serif", letterSpacing: "0.06em" }}>
+                    ADD YOUR LOGO
+                  </div>
+                </div>
+                <div style={{ padding: w <= 480 ? 16 : 22, textAlign: "center" }}>
+                  <div style={{ fontSize: w <= 480 ? 24 : 30, marginBottom: 10 }}>{p.icon}</div>
+                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 17 : 19, fontWeight: 700, color: "#fff", margin: "0 0 8px" }}>{p.name}</h3>
+                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#888", lineHeight: 1.6, margin: "0 0 14px" }}>{p.desc}</p>
+                  <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", color: GOLD, textTransform: "uppercase" }}>Request Quote →</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── GALLERY PAGE ────────────────────────────────────────────────────────────
+function GalleryPage() {
+  const [ref, inView] = useInView();
+  const w = useWindowWidth();
+  const slots = [1, 2, 3, 4, 5, 6];
+
+  return (
+    <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(160deg, ${DARK_WARM} 0%, ${DARK} 100%)` }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
+        <SectionLabel>Real Projects</SectionLabel>
+        <Heading size={44}>Manufacturing Gallery</Heading>
+        <GoldDivider />
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, color: "#888", maxWidth: 560, margin: "0 auto 36px" }}>
+          Browse our recent manufacturing projects and custom bag solutions.
+        </p>
+
+        <div ref={ref} style={{
+          display: "grid",
+          gridTemplateColumns: w <= 480 ? "1fr" : w <= 768 ? "repeat(2,1fr)" : "repeat(3,1fr)",
+          gap: w <= 480 ? 16 : 24,
+          opacity: inView ? 1 : 0,
+          transform: inView ? "none" : "translateY(28px)",
+          transition: "all 0.8s ease",
         }}>
-          <div style={{
-            background: DARK3, border: `1px solid ${GOLD}33`,
-            borderRadius: 4, padding: windowWidth <= 480 ? 24 : 48, position: "relative",
-          }}>
-            <div style={{ position: "absolute", top: -1, left: 40, right: 40, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
-            <Crown size={windowWidth <= 480 ? 32 : 48} />
-            <p style={{
-              fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 16 : 20, lineHeight: 1.7,
-              color: "#ccc", fontStyle: "italic", marginTop: 24, marginBottom: 0,
-            }}>
-              "Our mission is to provide customers with the highest possible quality in the most cost-effective manner."
-            </p>
-            <div style={{ marginTop: 32, paddingTop: 24, borderTop: `1px solid ${GOLD}22` }}>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", margin: 0 }}>Our Mission</p>
+          {slots.map(i => (
+            <div key={i} style={{
+              height: w <= 480 ? 200 : 260,
+              background: `${GOLD}07`,
+              borderRadius: 6,
+              border: `1px solid ${GOLD}20`,
+              overflow: "hidden",
+              position: "relative",
+              transition: "transform 0.3s, border-color 0.3s",
+              cursor: "pointer",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.025)"; e.currentTarget.style.borderColor = GOLD; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.borderColor = `${GOLD}20`; }}
+            >
+              <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${GOLD}0e, transparent)`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ fontSize: w <= 480 ? 36 : 48, marginBottom: 12 }}>👜</div>
+                <p style={{ color: GOLD, fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 14, fontWeight: 600, margin: 0 }}>Project {i}</p>
+                <p style={{ color: "#666", fontSize: w <= 480 ? 10 : 12, marginTop: 6 }}>Replace with actual photo</p>
+              </div>
             </div>
-          </div>
-          {!isMobile && (
-            <div style={{
-              position: "absolute", bottom: -20, right: -20,
-              background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
-              borderRadius: "50%", width: 100, height: 100,
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-              boxShadow: `0 0 40px ${GOLD}44`,
+          ))}
+        </div>
+
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#555", marginTop: 32, fontStyle: "italic" }}>
+          * Add real product photos here once provided by the client
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ── VALUES PAGE ─────────────────────────────────────────────────────────────
+function ValuesPage() {
+  const [ref, inView] = useInView(0.1);
+  const w = useWindowWidth();
+
+  const values = [
+    { icon: "🤝", title: "Skills Development", desc: "We invest in our people. Every team member is trained and upskilled, building long-term careers within our production facility." },
+    { icon: "🌍", title: "Community First", desc: "We are committed to promoting staff from previously disadvantaged communities, creating meaningful employment and opportunity." },
+    { icon: "⭐", title: "Quality Without Compromise", desc: "All materials are SABS-tested. Our reputation is built on bags that last and branding that impresses." },
+    { icon: "✏️", title: "Made to Your Specs", desc: "We manufacture from physical samples, technical drawings, or detailed descriptions — no order is too specific." },
+  ];
+
+  return (
+    <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(170deg, ${DARK3} 0%, ${DARK} 100%)`, position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", inset: 0, opacity: 0.022, backgroundImage: `radial-gradient(${GOLD} 1px, transparent 1px)`, backgroundSize: "30px 30px", pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ textAlign: "center", marginBottom: w <= 480 ? 40 : 60 }}>
+          <SectionLabel>What Drives Us</SectionLabel>
+          <Heading size={44}>Our Values &amp; Impact</Heading>
+          <GoldDivider />
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, color: "#888", maxWidth: 540, margin: "0 auto" }}>
+            Manufacturing excellence is only part of who we are. We believe business should uplift people and communities.
+          </p>
+        </div>
+
+        <div ref={ref} style={{ display: "grid", gridTemplateColumns: w <= 640 ? "1fr" : "repeat(2,1fr)", gap: w <= 480 ? 16 : 24 }}>
+          {values.map((v, i) => (
+            <div key={v.title} style={{
+              background: DARK2,
+              border: `1px solid ${GOLD}20`,
+              borderRadius: 6,
+              padding: w <= 480 ? 22 : 34,
+              display: "flex", gap: 20, alignItems: "flex-start",
+              opacity: inView ? 1 : 0,
+              transform: inView ? "none" : "translateY(22px)",
+              transition: `all 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`,
+              position: "relative", overflow: "hidden",
             }}>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 800, color: DARK, lineHeight: 1 }}>20+</span>
-              <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, fontWeight: 700, color: DARK, letterSpacing: "0.1em", textAlign: "center" }}>YRS EXP</span>
+              <div style={{ position: "absolute", left: 0, top: 16, bottom: 16, width: 3, background: `linear-gradient(to bottom, transparent, ${GOLD}, transparent)`, borderRadius: 2 }} />
+              <div style={{ fontSize: w <= 480 ? 26 : 34, flexShrink: 0, width: w <= 480 ? 46 : 56, height: w <= 480 ? 46 : 56, background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                {v.icon}
+              </div>
+              <div>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 16 : 19, fontWeight: 700, color: "#fff", margin: "0 0 8px" }}>{v.title}</h3>
+                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 13, color: "#888", lineHeight: 1.7, margin: 0 }}>{v.desc}</p>
+              </div>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── CONTACT PAGE ────────────────────────────────────────────────────────────
+function ContactPage() {
+  const [ref, inView] = useInView();
+  const w = useWindowWidth();
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({ name: "", company: "", email: "", phone: "", bagType: "", dimensions: "", quantity: "", branding: "", notes: "", logoFile: null, logoFileName: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
+
+  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+  const isMobile = w <= 768;
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (file) setForm(f => ({ ...f, logoFile: file, logoFileName: file.name }));
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true); setError("");
+    try {
+      const fd = new FormData();
+      Object.entries(form).forEach(([k, v]) => {
+        if (k === "logoFile" && v) fd.append("logo", v);
+        else if (k !== "logoFile" && k !== "logoFileName") fd.append(k, v);
+      });
+      // Replace YOUR_FORM_ID with actual Formspree ID once client provides it
+      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+      if (res.ok) setSubmitted(true);
+      else throw new Error();
+    } catch { setError("Failed to submit. Please try again or contact us directly."); }
+    finally { setLoading(false); }
+  };
+
+  const inp = {
+    width: "100%", background: "#0c0b08", border: `1px solid ${GOLD}30`,
+    borderRadius: 2, padding: w <= 480 ? "10px 12px" : "13px 15px", color: "#fff",
+    fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 14,
+    outline: "none", boxSizing: "border-box", transition: "border-color 0.2s",
+  };
+  const lbl = {
+    fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, fontWeight: 700,
+    letterSpacing: "0.15em", color: "#777", textTransform: "uppercase",
+    display: "block", marginBottom: 7, textAlign: "left",
+  };
+
+  return (
+    <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(160deg, ${DARK_WARM} 0%, ${DARK} 100%)`, position: "relative" }}>
+      <div ref={ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center" }}>
+
+        {/* Header */}
+        <div style={{ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(24px)", transition: "all 0.7s ease" }}>
+          <SectionLabel>Get In Touch</SectionLabel>
+          <Heading size={44}>Request a <span style={{ color: GOLD }}>Custom Quote</span></Heading>
+          <GoldDivider />
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, lineHeight: 1.8, color: "#888", marginBottom: 28 }}>
+            Tell us your specifications and we'll get back to you with a competitive manufacturing quote.
+          </p>
+        </div>
+
+        {/* Contact details row — no awkward gaps */}
+        <div style={{ display: "flex", flexDirection: w <= 640 ? "column" : "row", gap: 16, justifyContent: "center", marginBottom: 24, opacity: inView ? 1 : 0, transition: "all 0.7s ease 0.1s" }}>
+          {[
+            { icon: "📞", label: "Phone", val: "031 537 3788 / 083 443 6915", href: "tel:0315373788" },
+            { icon: "✉️", label: "Email", val: "leighshe.rml@gmail.com", href: "mailto:leighshe.rml@gmail.com" },
+            { icon: "📍", label: "Location", val: "Mount Edgecombe, KZN", href: null },
+          ].map(c => (
+            <div key={c.label} style={{ display: "flex", gap: 12, alignItems: "center", background: DARK3, border: `1px solid ${GOLD}18`, borderRadius: 4, padding: "14px 18px", flex: 1 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 2, background: `${GOLD}14`, border: `1px solid ${GOLD}28`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{c.icon}</div>
+              <div style={{ textAlign: "left" }}>
+                <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", margin: "0 0 3px" }}>{c.label}</p>
+                {c.href
+                  ? <a href={c.href} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#ccc", textDecoration: "none" }}>{c.val}</a>
+                  : <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#ccc", margin: 0 }}>{c.val}</p>
+                }
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* WhatsApp CTA */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 36, opacity: inView ? 1 : 0, transition: "all 0.7s ease 0.15s" }}>
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27d%20like%20a%20quote%20for%20custom%20bags.`}
+            target="_blank" rel="noopener noreferrer"
+            style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "#128C7E1a", border: "1px solid #128C7E55", borderRadius: 2, padding: "11px 24px", textDecoration: "none", transition: "background 0.2s, border-color 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#128C7E2e"; e.currentTarget.style.borderColor = "#25D366"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "#128C7E1a"; e.currentTarget.style.borderColor = "#128C7E55"; }}
+          >
+            <svg width={w <= 480 ? 18 : 22} height={w <= 480 ? 18 : 22} viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="16" fill="#25D366" />
+              <path d="M23.5 8.5A10.44 10.44 0 0 0 16 5.5C10.75 5.5 6.5 9.75 6.5 15a9.44 9.44 0 0 0 1.27 4.74L6.5 26.5l6.93-1.82A9.44 9.44 0 0 0 16 25.5c5.25 0 9.5-4.25 9.5-9.5a9.44 9.44 0 0 0-2-6.5zm-7.5 14.6a7.85 7.85 0 0 1-4-.96l-.29-.17-3 .79.8-2.93-.19-.3A7.9 7.9 0 1 1 16 23.1zm4.33-5.9c-.24-.12-1.4-.69-1.61-.77s-.37-.12-.53.12-.61.77-.75.93-.28.18-.51.06a6.43 6.43 0 0 1-1.9-1.17 7.13 7.13 0 0 1-1.31-1.63c-.14-.24 0-.37.1-.49s.24-.28.36-.42a1.6 1.6 0 0 0 .24-.4.44.44 0 0 0 0-.42c-.06-.12-.53-1.28-.73-1.75s-.38-.4-.53-.4h-.45a.87.87 0 0 0-.63.3 2.65 2.65 0 0 0-.82 1.97 4.6 4.6 0 0 0 .96 2.44 10.54 10.54 0 0 0 4.03 3.57c.56.24 1 .39 1.34.5a3.22 3.22 0 0 0 1.48.09 2.43 2.43 0 0 0 1.59-1.12 1.97 1.97 0 0 0 .14-1.12c-.06-.1-.22-.16-.46-.28z" fill="#fff"/>
+            </svg>
+            <div>
+              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 12, fontWeight: 700, color: "#25D366", margin: 0, letterSpacing: "0.1em" }}>WHATSAPP US</p>
+              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 9 : 10, color: "#777", margin: 0 }}>083 443 6915 · Quick response</p>
+            </div>
+          </a>
+        </div>
+
+        {/* Quote form card */}
+        <div style={{ background: DARK3, border: `1px solid ${GOLD}30`, borderRadius: 6, padding: w <= 480 ? 22 : 44, position: "relative", textAlign: "left", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(24px)", transition: "all 0.7s ease 0.2s" }}>
+          <div style={{ position: "absolute", top: -1, left: 48, right: 48, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
+
+          {submitted ? (
+            <div style={{ textAlign: "center", padding: "32px 0" }}>
+              <Crown size={w <= 480 ? 38 : 52} />
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 22 : 28, color: "#fff", margin: "18px 0 12px" }}>Quote Received!</h3>
+              <p style={{ fontFamily: "'Montserrat', sans-serif", color: "#888", fontSize: w <= 480 ? 12 : 14, lineHeight: 1.7 }}>
+                Thank you, <strong style={{ color: GOLD }}>{form.name}</strong>. We'll review your specs and get back to you shortly.
+              </p>
+              <button onClick={() => { setSubmitted(false); setStep(1); setForm({ name: "", company: "", email: "", phone: "", bagType: "", dimensions: "", quantity: "", branding: "", notes: "", logoFile: null, logoFileName: "" }); }}
+                style={{ marginTop: 20, background: "none", border: `1px solid ${GOLD}44`, borderRadius: 2, color: GOLD, padding: "8px 20px", cursor: "pointer", fontFamily: "'Montserrat', sans-serif", fontSize: 11, letterSpacing: "0.15em" }}>
+                SUBMIT ANOTHER
+              </button>
+            </div>
+          ) : (
+            <>
+              {error && <div style={{ background: "#ff000014", border: "1px solid #ff0000", borderRadius: 4, padding: "10px", marginBottom: 16, color: "#ff6666", fontSize: 13, textAlign: "center" }}>{error}</div>}
+
+              {/* Step indicators */}
+              <div style={{ display: "flex", gap: 8, marginBottom: w <= 480 ? 22 : 30 }}>
+                {[1, 2, 3].map(s => (
+                  <div key={s} style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
+                    <div style={{ width: w <= 480 ? 24 : 28, height: w <= 480 ? 24 : 28, borderRadius: "50%", flexShrink: 0, background: step >= s ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "#1a1a1a", border: `1px solid ${step >= s ? "transparent" : GOLD + "28"}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, fontWeight: 700, color: step >= s ? DARK : "#555" }}>{s}</div>
+                    {s < 3 && <div style={{ flex: 1, height: 1, background: step > s ? GOLD : `${GOLD}20` }} />}
+                  </div>
+                ))}
+              </div>
+
+              {/* Step 1 */}
+              {step === 1 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: w <= 480 ? 14 : 18 }}>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Your Details</p>
+                  <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
+                    <div><label style={lbl}>Full Name *</label><input value={form.name} onChange={set("name")} placeholder="Jane Smith" style={inp} onFocus={e => e.target.style.borderColor = GOLD} onBlur={e => e.target.style.borderColor = `${GOLD}30`} /></div>
+                    <div><label style={lbl}>Company / School</label><input value={form.company} onChange={set("company")} placeholder="Optional" style={inp} /></div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
+                    <div><label style={lbl}>Email *</label><input value={form.email} onChange={set("email")} type="email" placeholder="you@company.com" style={inp} /></div>
+                    <div><label style={lbl}>Phone</label><input value={form.phone} onChange={set("phone")} placeholder="0xx xxx xxxx" style={inp} /></div>
+                  </div>
+                  <button onClick={() => setStep(2)} disabled={!form.name || !form.email} style={{ background: form.name && form.email ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "#1e1e1e", border: "none", borderRadius: 2, cursor: form.name && form.email ? "pointer" : "not-allowed", fontFamily: "'Montserrat', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em", color: form.name && form.email ? DARK : "#444", padding: "13px 24px", textTransform: "uppercase", width: "100%" }}>Continue →</button>
+                </div>
+              )}
+
+              {/* Step 2 */}
+              {step === 2 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: w <= 480 ? 14 : 18 }}>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Bag Specifications</p>
+                  <div><label style={lbl}>Bag Type *</label><select value={form.bagType} onChange={set("bagType")} style={{ ...inp, appearance: "none" }}><option value="">Select a category...</option>{BAG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}</select></div>
+                  <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
+                    <div><label style={lbl}>Dimensions (H×W×D cm)</label><input value={form.dimensions} onChange={set("dimensions")} placeholder="e.g. 40×30×15" style={inp} /></div>
+                    <div><label style={lbl}>Quantity *</label><input value={form.quantity} onChange={set("quantity")} type="number" placeholder="e.g. 500" style={inp} /></div>
+                  </div>
+                  <div>
+                    <label style={lbl}>Branding Preference</label>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                      {BRANDING.map(b => (<button key={b} onClick={() => setForm(f => ({ ...f, branding: b }))} style={{ background: form.branding === b ? `${GOLD}20` : "transparent", border: `1px solid ${form.branding === b ? GOLD : GOLD + "28"}`, borderRadius: 2, cursor: "pointer", padding: "7px 14px", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 12, fontWeight: 600, color: form.branding === b ? GOLD : "#666" }}>{b}</button>))}
+                    </div>
+                  </div>
+                  {/* Logo upload */}
+                  <div>
+                    <label style={lbl}>Upload Logo / Artwork</label>
+                    <div onClick={() => fileInputRef.current?.click()} style={{ width: "100%", boxSizing: "border-box", background: "#0c0b08", border: `1px dashed ${form.logoFileName ? GOLD : GOLD + "38"}`, borderRadius: 2, padding: "16px", cursor: "pointer", textAlign: "center", transition: "border-color 0.2s" }}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = GOLD}
+                      onMouseLeave={e => e.currentTarget.style.borderColor = form.logoFileName ? GOLD : `${GOLD}38`}
+                    >
+                      <input ref={fileInputRef} type="file" accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps" onChange={handleFile} style={{ display: "none" }} />
+                      {form.logoFileName ? (
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+                          <span>✅</span>
+                          <div><p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: GOLD, margin: 0, fontWeight: 600 }}>{form.logoFileName}</p><p style={{ fontSize: 10, color: "#666", margin: "2px 0 0" }}>Click to change</p></div>
+                        </div>
+                      ) : (
+                        <div><p style={{ fontSize: 26, marginBottom: 6 }}>📎</p><p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#777", margin: 0 }}>Click to upload logo or artwork</p><p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, color: "#555", margin: "4px 0 0" }}>PNG, JPG, SVG, PDF, AI, EPS</p></div>
+                      )}
+                    </div>
+                    {form.logoFileName && <button onClick={(e) => { e.stopPropagation(); setForm(f => ({ ...f, logoFile: null, logoFileName: "" })); if (fileInputRef.current) fileInputRef.current.value = ""; }} style={{ marginTop: 6, background: "none", border: "none", cursor: "pointer", fontSize: 10, color: "#666", textDecoration: "underline", display: "block" }}>Remove file</button>}
+                  </div>
+                  <div style={{ display: "flex", gap: 12, flexDirection: isMobile ? "column" : "row" }}>
+                    <button onClick={() => setStep(1)} style={{ background: "none", border: `1px solid ${GOLD}28`, borderRadius: 2, cursor: "pointer", color: "#666", padding: "11px 18px", flex: 1 }}>← Back</button>
+                    <button onClick={() => setStep(3)} disabled={!form.bagType || !form.quantity} style={{ background: form.bagType && form.quantity ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "#1e1e1e", border: "none", borderRadius: 2, cursor: form.bagType && form.quantity ? "pointer" : "not-allowed", fontFamily: "'Montserrat', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em", color: form.bagType && form.quantity ? DARK : "#444", padding: "11px 18px", flex: 1 }}>Continue →</button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3 */}
+              {step === 3 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: w <= 480 ? 14 : 18 }}>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Additional Notes</p>
+                  <div><label style={lbl}>Special Requirements / Notes</label><textarea value={form.notes} onChange={set("notes")} rows={4} placeholder="Describe any specific requirements, materials, colors..." style={{ ...inp, resize: "vertical" }} /></div>
+                  <div style={{ background: "#0a0906", border: `1px solid ${GOLD}18`, borderRadius: 2, padding: 18 }}>
+                    <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.2em", color: GOLD, marginBottom: 12, textAlign: "center" }}>QUOTE SUMMARY</p>
+                    {[["Contact", form.name + (form.company ? ` · ${form.company}` : "")], ["Bag Type", form.bagType], ["Quantity", form.quantity], ["Branding", form.branding || "Not specified"], ["Logo", form.logoFileName || "Not uploaded"]].map(([k, v]) => (
+                      <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                        <span style={{ fontSize: 12, color: "#666" }}>{k}</span>
+                        <span style={{ fontSize: 12, color: "#ccc", fontWeight: 600, maxWidth: "60%", textAlign: "right", wordBreak: "break-word" }}>{v}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", gap: 12, flexDirection: isMobile ? "column" : "row" }}>
+                    <button onClick={() => setStep(2)} style={{ background: "none", border: `1px solid ${GOLD}28`, borderRadius: 2, cursor: "pointer", color: "#666", padding: "11px 18px", flex: 1 }}>← Back</button>
+                    <button onClick={handleSubmit} disabled={loading} style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, border: "none", borderRadius: 2, cursor: "pointer", fontFamily: "'Montserrat', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.15em", color: DARK, padding: "11px 18px", textTransform: "uppercase", opacity: loading ? 0.7 : 1, flex: 1 }}>
+                      {loading ? "Sending..." : "Submit Quote Request"}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -476,766 +763,86 @@ function About() {
   );
 }
 
-// Products Section
-function Products() {
-  const [ref, inView] = useInView(0.05);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const ProductCard = ({ p, delay }) => {
-    const [hov, setHov] = useState(false);
-    const padding = windowWidth <= 480 ? 20 : 32;
-    
-    return (
-      <div
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
-        onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-        style={{
-          background: hov ? DARK3 : "#0e0e0e",
-          border: `1px solid ${hov ? GOLD + "66" : GOLD + "22"}`,
-          borderRadius: 4, padding: padding, cursor: "pointer",
-          transition: "all 0.3s ease",
-          opacity: inView ? 1 : 0,
-          transform: inView ? "none" : "translateY(24px)",
-          transitionDelay: `${delay}ms`,
-          position: "relative", overflow: "hidden",
-        }}
-        className="product-card"
-      >
-        {hov && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />}
-        <div style={{ fontSize: windowWidth <= 480 ? 28 : 36, marginBottom: windowWidth <= 480 ? 12 : 16 }}>{p.icon}</div>
-        <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, fontWeight: 700, color: "#fff", margin: "0 0 8px" }}>{p.name}</h3>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#888", lineHeight: 1.6, margin: "0 0 16px" }}>{p.desc}</p>
-        <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 11, fontWeight: 700, letterSpacing: "0.15em", color: GOLD, textTransform: "uppercase" }}>
-          Request Quote →
-        </span>
-      </div>
-    );
-  };
+// ── FOOTER ──────────────────────────────────────────────────────────────────
+function Footer({ setActivePage }) {
+  const w = useWindowWidth();
+  const isMobile = w <= 768;
 
   return (
-    <section id="products" ref={ref} style={{ padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%", background: DARK }}>
+     <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: windowWidth <= 480 ? 40 : 64 }}>
-          <SectionLabel>What We Manufacture</SectionLabel>
-          <Heading center size={42}>Our Product Range</Heading>
-          <GoldDivider />
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15, color: "#888", maxWidth: 500, margin: "0 auto" }}>
-            Every bag custom-built to your exact specifications, branding, and dimensions.
+        {/* Scripture block */}
+        <div style={{ background: "linear-gradient(135deg, #110e00, #0a0806)", border: `1px solid ${GOLD}28`, borderRadius: 6, padding: w <= 480 ? "24px 18px" : "44px 52px", marginBottom: w <= 480 ? 40 : 56, textAlign: "center", position: "relative" }}>
+          <div style={{ position: "absolute", top: -1, left: 48, right: 48, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
+          <Crown size={w <= 480 ? 24 : 34} />
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : w <= 768 ? 16 : 18, lineHeight: 1.75, color: "#bbb", fontStyle: "italic", maxWidth: 700, margin: "18px auto 0" }}>
+            "And Jabez called on the God of Israel saying, 'Oh, that You would bless me indeed, and enlarge my territory, that Your hand would be with me, and that You would keep me from evil, that I may not cause pain!' So God granted him what he requested."
           </p>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, letterSpacing: "0.2em", color: GOLD, marginTop: 16, textTransform: "uppercase" }}>— 1 Chronicles 4:10 (NKJV)</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: windowWidth <= 480 ? "1fr" : "repeat(auto-fill, minmax(280px, 1fr))", gap: windowWidth <= 480 ? 16 : 24 }} className="products-grid">
-          {PRODUCTS.map((p, i) => (
-            <ProductCard key={p.name} p={p} delay={i * 60} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Gallery Section
-function Gallery() {
-  const [ref, inView] = useInView();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const galleryImages = [1, 2, 3, 4, 5, 6];
-  const imageHeight = windowWidth <= 480 ? 200 : windowWidth <= 768 ? 250 : 300;
-  
-  return (
-    <section id="gallery" ref={ref} style={{ padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%", background: DARK }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: 'center' }}>
-        <SectionLabel>Real Projects</SectionLabel>
-        <Heading size={42} center>Manufacturing Gallery</Heading>
-        <GoldDivider />
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15, color: "#888", maxWidth: 600, margin: "0 auto 32px" }}>
-          Browse through our recent manufacturing projects and custom bag solutions
-        </p>
-        
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: windowWidth <= 480 ? "1fr" : windowWidth <= 768 ? "repeat(2, 1fr)" : "repeat(auto-fit, minmax(300px, 1fr))", 
-          gap: windowWidth <= 480 ? 16 : 24, 
-          marginTop: 24,
-          opacity: inView ? 1 : 0,
-          transform: inView ? "none" : "translateY(30px)",
-          transition: "all 0.8s ease"
-        }}>
-          {galleryImages.map((i) => (
-            <div key={i} style={{
-              height: imageHeight, 
-              background: `${GOLD}08`, 
-              borderRadius: 8,
-              border: `1px solid ${GOLD}22`,
-              cursor: 'pointer',
-              overflow: 'hidden',
-              position: 'relative',
-              transition: 'transform 0.3s ease, border-color 0.3s ease',
-            }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'scale(1.02)';
-                e.currentTarget.style.borderColor = GOLD;
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.borderColor = `${GOLD}22`;
-              }}
-            >
-              <div style={{
-                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                background: `linear-gradient(135deg, ${GOLD}11, transparent)`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'
-              }}>
-                <div style={{ fontSize: windowWidth <= 480 ? 32 : 48, marginBottom: windowWidth <= 480 ? 12 : 16 }}>👜</div>
-                <p style={{ color: GOLD, fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 12 : 14, fontWeight: 600 }}>
-                  Sample Project {i}
-                </p>
-                <p style={{ color: "#888", fontSize: windowWidth <= 480 ? 10 : 12, marginTop: windowWidth <= 480 ? 6 : 8 }}>
-                  Click to view
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <p style={{ 
-          fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginTop: 32, fontStyle: 'italic'
-        }}>
-          * Replace with actual manufacturing photos of your products
-        </p>
-      </div>
-    </section>
-  );
-}
-
-// ── NEW: Social Impact / Our Values Section ──────────────────────────────────
-function OurValues() {
-  const [ref, inView] = useInView(0.1);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const isMobile = windowWidth <= 768;
-
-  const values = [
-    {
-      icon: "🤝",
-      title: "Skills Development",
-      desc: "We invest in our people. Every team member is trained and upskilled, building long-term careers within our production facility.",
-    },
-    {
-      icon: "🌍",
-      title: "Community First",
-      desc: "We are committed to promoting staff from previously disadvantaged communities, creating meaningful employment and opportunity.",
-    },
-    {
-      icon: "⭐",
-      title: "Quality Without Compromise",
-      desc: "All materials are SABS-tested. We never cut corners — our reputation is built on bags that last and branding that impresses.",
-    },
-    {
-      icon: "✏️",
-      title: "Made to Your Specs",
-      desc: "We manufacture from physical samples, technical drawings, or detailed descriptions — no order is too specific.",
-    },
-  ];
-
-  return (
-    <section id="values" ref={ref} style={{
-      padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%",
-      background: DARK3,
-      position: "relative", overflow: "hidden",
-    }}>
-      {/* Decorative background pattern */}
-      <div style={{
-        position: "absolute", inset: 0, opacity: 0.025,
-        backgroundImage: `radial-gradient(${GOLD} 1px, transparent 1px)`,
-        backgroundSize: "32px 32px",
-        pointerEvents: "none",
-      }} />
-
-      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <div style={{ textAlign: "center", marginBottom: windowWidth <= 480 ? 40 : 64 }}>
-          <SectionLabel>What Drives Us</SectionLabel>
-          <Heading center size={42}>Our Values &amp; Impact</Heading>
-          <GoldDivider />
-          <p style={{
-            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15,
-            color: "#888", maxWidth: 560, margin: "0 auto",
-          }}>
-            Manufacturing excellence is only part of who we are. We believe business should uplift people and communities.
-          </p>
-        </div>
-
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
-          gap: windowWidth <= 480 ? 16 : 24,
-        }}>
-          {values.map((v, i) => (
-            <div
-              key={v.title}
-              style={{
-                background: DARK2,
-                border: `1px solid ${GOLD}22`,
-                borderRadius: 4,
-                padding: windowWidth <= 480 ? 24 : 36,
-                display: "flex", gap: windowWidth <= 480 ? 16 : 24, alignItems: "flex-start",
-                opacity: inView ? 1 : 0,
-                transform: inView ? "none" : "translateY(24px)",
-                transition: `all 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`,
-                position: "relative", overflow: "hidden",
-              }}
-            >
-              {/* Gold left accent bar */}
-              <div style={{
-                position: "absolute", left: 0, top: 20, bottom: 20, width: 3,
-                background: `linear-gradient(to bottom, transparent, ${GOLD}, transparent)`,
-                borderRadius: 2,
-              }} />
-              <div style={{
-                fontSize: windowWidth <= 480 ? 28 : 36, flexShrink: 0,
-                width: windowWidth <= 480 ? 48 : 60, height: windowWidth <= 480 ? 48 : 60,
-                background: `${GOLD}12`, border: `1px solid ${GOLD}33`,
-                borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                {v.icon}
-              </div>
-              <div>
-                <h3 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: windowWidth <= 480 ? 17 : 20, fontWeight: 700, color: "#fff",
-                  margin: "0 0 8px",
-                }}>{v.title}</h3>
-                <p style={{
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: windowWidth <= 480 ? 12 : 14, color: "#888", lineHeight: 1.7, margin: 0,
-                }}>{v.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Quote Form with Formspree Integration
-function QuoteForm() {
-  const [ref, inView] = useInView();
-  const [step, setStep] = useState(1);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [form, setForm] = useState({
-    name: "", company: "", email: "", phone: "",
-    bagType: "", dimensions: "", quantity: "", branding: "", notes: "",
-    logoFile: null, logoFileName: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const setFormField = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setForm(f => ({ ...f, logoFile: file, logoFileName: file.name }));
-    }
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    setError("");
-    
-    try {
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        if (key === "logoFile" && value) {
-          formData.append("logo", value);
-        } else if (key !== "logoFile" && key !== "logoFileName") {
-          formData.append(key, value);
-        }
-      });
-      
-      // Replace YOUR_FORM_ID with the actual Formspree endpoint once client provides it
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-      
-      if (response.ok) {
-        setSubmitted(true);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (err) {
-      console.error('Error submitting form:', err);
-      setError("Failed to submit. Please try again or contact us directly.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const inputStyle = {
-    width: "100%", background: "#0e0e0e", border: `1px solid ${GOLD}33`,
-    borderRadius: 2, padding: windowWidth <= 480 ? "10px 12px" : "14px 16px", color: "#fff",
-    fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 12 : 14,
-    outline: "none", boxSizing: "border-box", transition: "border-color 0.2s",
-  };
-
-  const labelStyle = {
-    fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 11, fontWeight: 700,
-    letterSpacing: "0.15em", color: "#888", textTransform: "uppercase",
-    display: "block", marginBottom: windowWidth <= 480 ? 6 : 8,
-  };
-
-  const isMobile = windowWidth <= 768;
-
-  // WhatsApp CTA
-  const WhatsAppButton = () => (
-    <a
-      href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27d%20like%20to%20request%20a%20quote%20for%20custom%20bags.`}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        display: "flex", alignItems: "center", gap: 10,
-        background: "#128C7E22", border: "1px solid #128C7E66",
-        borderRadius: 2, padding: windowWidth <= 480 ? "10px 14px" : "12px 18px",
-        textDecoration: "none", marginTop: windowWidth <= 480 ? 20 : 28,
-        transition: "background 0.2s, border-color 0.2s",
-      }}
-      onMouseEnter={e => { e.currentTarget.style.background = "#128C7E33"; e.currentTarget.style.borderColor = "#25D366"; }}
-      onMouseLeave={e => { e.currentTarget.style.background = "#128C7E22"; e.currentTarget.style.borderColor = "#128C7E66"; }}
-    >
-      {/* WhatsApp SVG icon */}
-      <svg width={windowWidth <= 480 ? 18 : 22} height={windowWidth <= 480 ? 18 : 22} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="16" fill="#25D366" />
-        <path d="M23.5 8.5A10.44 10.44 0 0 0 16 5.5C10.75 5.5 6.5 9.75 6.5 15a9.44 9.44 0 0 0 1.27 4.74L6.5 26.5l6.93-1.82A9.44 9.44 0 0 0 16 25.5c5.25 0 9.5-4.25 9.5-9.5a9.44 9.44 0 0 0-2-6.5zm-7.5 14.6a7.85 7.85 0 0 1-4-.96l-.29-.17-3 .79.8-2.93-.19-.3A7.9 7.9 0 1 1 16 23.1zm4.33-5.9c-.24-.12-1.4-.69-1.61-.77s-.37-.12-.53.12-.61.77-.75.93-.28.18-.51.06a6.43 6.43 0 0 1-1.9-1.17 7.13 7.13 0 0 1-1.31-1.63c-.14-.24 0-.37.1-.49s.24-.28.36-.42a1.6 1.6 0 0 0 .24-.4.44.44 0 0 0 0-.42c-.06-.12-.53-1.28-.73-1.75s-.38-.4-.53-.4h-.45a.87.87 0 0 0-.63.3 2.65 2.65 0 0 0-.82 1.97 4.6 4.6 0 0 0 .96 2.44 10.54 10.54 0 0 0 4.03 3.57c.56.24 1 .39 1.34.5a3.22 3.22 0 0 0 1.48.09 2.43 2.43 0 0 0 1.59-1.12 1.97 1.97 0 0 0 .14-1.12c-.06-.1-.22-.16-.46-.28z" fill="#fff"/>
-      </svg>
-      <div>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 12, fontWeight: 700, color: "#25D366", margin: 0, letterSpacing: "0.1em" }}>WHATSAPP US</p>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 11, color: "#888", margin: 0 }}>083 468 1719 · Quick response</p>
-      </div>
-    </a>
-  );
-
-  return (
-    <section id="contact" ref={ref} style={{ padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%", background: DARK2, position: "relative" }}>
-      {windowWidth > 768 && (
-        <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 4, background: `linear-gradient(to bottom, transparent, ${GOLD}, transparent)` }} />
-      )}
-
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1.4fr", gap: isMobile ? 40 : 80, alignItems: "start" }} className="contact-grid">
-        <div style={{ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateX(-30px)", transition: "all 0.8s ease", textAlign: isMobile ? "center" : "left" }}>
-          <SectionLabel>Get In Touch</SectionLabel>
-          <Heading size={42}>Request a<br /><span style={{ color: GOLD }}>Custom Quote</span></Heading>
-          <GoldDivider />
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15, lineHeight: 1.8, color: "#888", marginBottom: 32 }}>
-            Tell us your specifications and we'll get back to you with a competitive manufacturing quote. We work from drawings, samples, or detailed descriptions.
-          </p>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 20 : 24, alignItems: isMobile ? "center" : "flex-start" }}>
-            {[
-              { icon: "📞", label: "Phone", val: "031 537 3788 / 083 468 1719" },
-              { icon: "✉️", label: "Email", val: "leighshe.rml@gmail.com" },
-              { icon: "📍", label: "Location", val: "Mount Edgecombe, KwaZulu-Natal" },
-            ].map(c => (
-              <div key={c.label} style={{ display: "flex", gap: windowWidth <= 480 ? 12 : 16, alignItems: "flex-start", justifyContent: isMobile ? "center" : "flex-start" }}>
-                <div style={{
-                  width: windowWidth <= 480 ? 36 : 44, height: windowWidth <= 480 ? 36 : 44, borderRadius: 2, flexShrink: 0,
-                  background: `${GOLD}18`, border: `1px solid ${GOLD}33`,
-                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: windowWidth <= 480 ? 16 : 18,
-                }}>{c.icon}</div>
-                <div style={{ textAlign: "left" }}>
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", margin: "0 0 4px" }}>{c.label}</p>
-                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 12 : 14, color: "#ccc", margin: 0 }}>{c.val}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* WhatsApp CTA */}
-          <WhatsAppButton />
-        </div>
-
-        <div style={{ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateX(30px)", transition: "all 0.8s ease 0.2s" }}>
-          <div style={{ background: DARK3, border: `1px solid ${GOLD}33`, borderRadius: 4, padding: windowWidth <= 480 ? 24 : 48, position: "relative" }} className="form-container">
-            <div style={{ position: "absolute", top: -1, left: 40, right: 40, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
-            {submitted ? (
-              <div style={{ textAlign: "center", padding: windowWidth <= 480 ? "20px 0" : "40px 0" }}>
-                <Crown size={windowWidth <= 480 ? 40 : 56} />
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 22 : 28, color: "#fff", margin: "20px 0 12px" }}>Quote Received!</h3>
-                <p style={{ fontFamily: "'Montserrat', sans-serif", color: "#888", fontSize: windowWidth <= 480 ? 12 : 14, lineHeight: 1.7 }}>
-                  Thank you, <strong style={{ color: GOLD }}>{form.name}</strong>. We'll review your specifications and get back to you shortly.
-                </p>
-                <button onClick={() => { setSubmitted(false); setStep(1); setForm({ name: "", company: "", email: "", phone: "", bagType: "", dimensions: "", quantity: "", branding: "", notes: "", logoFile: null, logoFileName: "" }); }}
-                  style={{ marginTop: 20, background: "none", border: `1px solid ${GOLD}55`, borderRadius: 2, color: GOLD, padding: "8px 20px", cursor: "pointer", fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, letterSpacing: "0.15em" }}>
-                  SUBMIT ANOTHER
-                </button>
-              </div>
-            ) : (
-              <>
-                {error && (
-                  <div style={{
-                    background: "rgba(255,0,0,0.1)", border: `1px solid #ff0000`,
-                    borderRadius: 4, padding: "10px", marginBottom: "16px",
-                    color: "#ff6666", fontSize: windowWidth <= 480 ? 11 : 13, textAlign: "center"
-                  }}>
-                    {error}
-                  </div>
-                )}
-                
-                {/* Step indicators */}
-                <div style={{ display: "flex", gap: 8, marginBottom: windowWidth <= 480 ? 24 : 32 }}>
-                  {[1, 2, 3].map(s => (
-                    <div key={s} style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
-                      <div style={{
-                        width: windowWidth <= 480 ? 24 : 28, height: windowWidth <= 480 ? 24 : 28, borderRadius: "50%", flexShrink: 0,
-                        background: step >= s ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "#1a1a1a",
-                        border: `1px solid ${step >= s ? "transparent" : GOLD + "33"}`,
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 11, fontWeight: 700,
-                        color: step >= s ? DARK : "#555",
-                      }}>{s}</div>
-                      {s < 3 && <div style={{ flex: 1, height: 1, background: step > s ? GOLD : `${GOLD}22` }} />}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Step 1 — Contact Details */}
-                {step === 1 && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 16 : 20 }}>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, color: "#fff", margin: "0 0 8px" }}>Your Details</p>
-                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
-                      <div>
-                        <label style={labelStyle}>Full Name *</label>
-                        <input value={form.name} onChange={setFormField("name")} placeholder="Jane Smith" style={inputStyle}
-                          onFocus={e => e.target.style.borderColor = GOLD} onBlur={e => e.target.style.borderColor = `${GOLD}33`} />
-                      </div>
-                      <div>
-                        <label style={labelStyle}>Company / School</label>
-                        <input value={form.company} onChange={setFormField("company")} placeholder="Optional" style={inputStyle} />
-                      </div>
-                    </div>
-                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
-                      <div>
-                        <label style={labelStyle}>Email *</label>
-                        <input value={form.email} onChange={setFormField("email")} type="email" placeholder="you@company.com" style={inputStyle} />
-                      </div>
-                      <div>
-                        <label style={labelStyle}>Phone</label>
-                        <input value={form.phone} onChange={setFormField("phone")} placeholder="0xx xxx xxxx" style={inputStyle} />
-                      </div>
-                    </div>
-                    <button onClick={() => setStep(2)} disabled={!form.name || !form.email} style={{ 
-                      background: form.name && form.email ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "#222", 
-                      border: "none", borderRadius: 2, cursor: form.name && form.email ? "pointer" : "not-allowed",
-                      fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 12, fontWeight: 700,
-                      letterSpacing: "0.15em", color: form.name && form.email ? DARK : "#555", 
-                      padding: windowWidth <= 480 ? "10px 20px" : "14px 24px", textTransform: "uppercase", alignSelf: isMobile ? "stretch" : "flex-end" 
-                    }}>Continue →</button>
-                  </div>
-                )}
-
-                {/* Step 2 — Bag Specs + Logo Upload */}
-                {step === 2 && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 16 : 20 }}>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, color: "#fff", margin: "0 0 8px" }}>Bag Specifications</p>
-                    <div>
-                      <label style={labelStyle}>Bag Type *</label>
-                      <select value={form.bagType} onChange={setFormField("bagType")} style={{ ...inputStyle, appearance: "none" }}>
-                        <option value="">Select a category...</option>
-                        {BAG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                      </select>
-                    </div>
-                    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
-                      <div>
-                        <label style={labelStyle}>Dimensions (H×W×D cm)</label>
-                        <input value={form.dimensions} onChange={setFormField("dimensions")} placeholder="e.g. 40×30×15" style={inputStyle} />
-                      </div>
-                      <div>
-                        <label style={labelStyle}>Quantity *</label>
-                        <input value={form.quantity} onChange={setFormField("quantity")} type="number" placeholder="e.g. 500" style={inputStyle} />
-                      </div>
-                    </div>
-                    <div>
-                      <label style={labelStyle}>Branding Preference</label>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: isMobile ? "center" : "flex-start" }}>
-                        {BRANDING.map(b => (
-                          <button key={b} onClick={() => setForm(f => ({ ...f, branding: b }))} style={{
-                            background: form.branding === b ? `${GOLD}22` : "transparent",
-                            border: `1px solid ${form.branding === b ? GOLD : GOLD + "33"}`,
-                            borderRadius: 2, cursor: "pointer", padding: windowWidth <= 480 ? "6px 12px" : "8px 16px",
-                            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, fontWeight: 600,
-                            color: form.branding === b ? GOLD : "#666"
-                          }}>{b}</button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* ── Logo / Artwork Upload ── */}
-                    <div>
-                      <label style={labelStyle}>Upload Logo / Artwork</label>
-                      <div
-                        onClick={() => fileInputRef.current?.click()}
-                        style={{
-                          width: "100%", boxSizing: "border-box",
-                          background: "#0e0e0e", border: `1px dashed ${form.logoFileName ? GOLD : GOLD + "44"}`,
-                          borderRadius: 2, padding: windowWidth <= 480 ? "14px 12px" : "18px 16px",
-                          cursor: "pointer", textAlign: "center",
-                          transition: "border-color 0.2s, background 0.2s",
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.background = `${GOLD}08`; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = form.logoFileName ? GOLD : `${GOLD}44`; e.currentTarget.style.background = "#0e0e0e"; }}
-                      >
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps"
-                          onChange={handleFileChange}
-                          style={{ display: "none" }}
-                        />
-                        {form.logoFileName ? (
-                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-                            <span style={{ fontSize: 20 }}>✅</span>
-                            <div>
-                              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: GOLD, margin: 0, fontWeight: 600 }}>{form.logoFileName}</p>
-                              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, color: "#666", margin: "2px 0 0" }}>Click to change file</p>
-                            </div>
-                          </div>
-                        ) : (
-                          <div>
-                            <p style={{ fontSize: windowWidth <= 480 ? 22 : 28, marginBottom: 6 }}>📎</p>
-                            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#888", margin: 0 }}>
-                              Click to upload your logo or artwork
-                            </p>
-                            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, color: "#555", margin: "4px 0 0" }}>
-                              PNG, JPG, SVG, PDF, AI, EPS accepted
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                      {/* Clear file button */}
-                      {form.logoFileName && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); setForm(f => ({ ...f, logoFile: null, logoFileName: "" })); if (fileInputRef.current) fileInputRef.current.value = ""; }}
-                          style={{
-                            marginTop: 6, background: "none", border: "none", cursor: "pointer",
-                            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10,
-                            color: "#666", letterSpacing: "0.1em", textDecoration: "underline",
-                          }}
-                        >Remove file</button>
-                      )}
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexDirection: isMobile ? "column" : "row" }}>
-                      <button onClick={() => setStep(1)} style={{ 
-                        background: "none", border: `1px solid ${GOLD}33`, borderRadius: 2, 
-                        cursor: "pointer", color: "#666", padding: windowWidth <= 480 ? "8px 16px" : "12px 20px" 
-                      }}>← Back</button>
-                      <button onClick={() => setStep(3)} disabled={!form.bagType || !form.quantity} style={{ 
-                        background: form.bagType && form.quantity ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "#222",
-                        border: "none", borderRadius: 2, cursor: form.bagType && form.quantity ? "pointer" : "not-allowed",
-                        fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 12, fontWeight: 700,
-                        letterSpacing: "0.15em", color: form.bagType && form.quantity ? DARK : "#555", 
-                        padding: windowWidth <= 480 ? "8px 16px" : "14px 24px" 
-                      }}>Continue →</button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 3 — Notes & Review */}
-                {step === 3 && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 16 : 20 }}>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, color: "#fff", margin: "0 0 8px" }}>Additional Notes</p>
-                    <div>
-                      <label style={labelStyle}>Special Requirements / Notes</label>
-                      <textarea value={form.notes} onChange={setFormField("notes")} rows={4} 
-                        placeholder="Describe any specific requirements, materials, colors..." 
-                        style={{ ...inputStyle, resize: "vertical" }} />
-                    </div>
-                    <div style={{ background: "#0a0a0a", border: `1px solid ${GOLD}22`, borderRadius: 2, padding: windowWidth <= 480 ? 12 : 20 }} className="quote-summary">
-                      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.2em", color: GOLD, marginBottom: 12 }}>Quote Summary</p>
-                      {[
-                        ["Contact", form.name + (form.company ? ` · ${form.company}` : "")],
-                        ["Bag Type", form.bagType],
-                        ["Quantity", form.quantity],
-                        ["Branding", form.branding || "Not specified"],
-                        ["Logo / Artwork", form.logoFileName || "Not uploaded"],
-                      ].map(([k, v]) => (
-                        <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, flexDirection: isMobile && windowWidth <= 375 ? "column" : "row", gap: isMobile && windowWidth <= 375 ? 4 : 0 }}>
-                          <span style={{ fontSize: windowWidth <= 480 ? 10 : 12, color: "#666" }}>{k}</span>
-                          <span style={{ fontSize: windowWidth <= 480 ? 10 : 12, color: "#ccc", fontWeight: 600, maxWidth: "60%", textAlign: "right", wordBreak: "break-word" }}>{v}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexDirection: isMobile ? "column" : "row" }}>
-                      <button onClick={() => setStep(2)} style={{ 
-                        background: "none", border: `1px solid ${GOLD}33`, borderRadius: 2, 
-                        cursor: "pointer", color: "#666", padding: windowWidth <= 480 ? "8px 16px" : "12px 20px" 
-                      }}>← Back</button>
-                      <button onClick={handleSubmit} style={{ 
-                        background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, 
-                        border: "none", borderRadius: 2, cursor: "pointer",
-                        fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 12, fontWeight: 700,
-                        letterSpacing: "0.15em", color: DARK, padding: windowWidth <= 480 ? "8px 16px" : "14px 32px", 
-                        textTransform: "uppercase", opacity: loading ? 0.7 : 1
-                      }} disabled={loading}>
-                        {loading ? "Sending..." : "Submit Quote Request"}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Footer with Logo
-function Footer() {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  const isMobile = windowWidth <= 768;
-  const logoSize = windowWidth <= 480 ? 28 : 35;
-  const padding = windowWidth <= 480 ? "40px 4% 30px" : windowWidth <= 768 ? "60px 5% 40px" : "80px 5% 40px";
-  
-  return (
-    <footer style={{ background: "#050505", padding: padding, position: "relative" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ 
-          background: `linear-gradient(135deg, #110e00, #0a0a0a)`, 
-          border: `1px solid ${GOLD}33`, borderRadius: 4, 
-          padding: windowWidth <= 480 ? "24px 16px" : windowWidth <= 768 ? "32px 32px" : "48px 56px", 
-          marginBottom: windowWidth <= 480 ? 40 : 64, textAlign: "center", 
-          position: "relative" 
-        }} className="footer-scripture">
-          <div style={{ 
-            position: "absolute", top: -1, left: 40, right: 40, height: 2, 
-            background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` 
-          }} />
-          <Crown size={windowWidth <= 480 ? 24 : 36} />
-          <p style={{ 
-            fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 14 : windowWidth <= 768 ? 16 : 18, lineHeight: 1.7, 
-            color: "#bbb", fontStyle: "italic", maxWidth: 720, margin: "20px auto 0" 
-          }}>
-            "And Jabez called on the God of Israel saying, 'Oh, that You would bless me indeed, 
-            and enlarge my territory, that Your hand would be with me, and that You would keep me 
-            from evil, that I may not cause pain!' So God granted him what he requested."
-          </p>
-          <p style={{ 
-            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, letterSpacing: "0.2em", 
-            color: GOLD, marginTop: 16, textTransform: "uppercase" 
-          }}>
-            — 1 Chronicles 4:10 (NKJV)
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", gap: isMobile ? 32 : 48, marginBottom: isMobile ? 32 : 48, textAlign: isMobile ? "center" : "left" }} className="footer-grid">
+        {/* Footer grid */}
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", gap: isMobile ? 28 : 44, marginBottom: isMobile ? 28 : 44, textAlign: isMobile ? "center" : "left" }}>
+          {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, justifyContent: isMobile ? "center" : "flex-start" }} className="footer-logo">
-              <img 
-                src={logo} 
-                alt="RR Promotional Logo" 
-                style={{ height: logoSize, width: 'auto', objectFit: 'contain', borderRadius: 4 }} 
-              />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, justifyContent: isMobile ? "center" : "flex-start" }}>
+              <img src={logo} alt="RR Logo" style={{ height: w <= 480 ? 28 : 34, width: "auto", objectFit: "contain", borderRadius: 4 }} />
               <div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 14 : 16, fontWeight: 800, color: "#fff" }}>RR PROMOTIONAL</div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 7 : 9, letterSpacing: "0.3em", color: GOLD, fontWeight: 700 }}>BAG MANUFACTURERS</div>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 15, fontWeight: 800, color: "#fff" }}>RR PROMOTIONAL</div>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: "0.3em", color: GOLD, fontWeight: 700 }}>BAG MANUFACTURERS</div>
               </div>
             </div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", lineHeight: 1.7, maxWidth: isMobile ? "100%" : 280 }}>
-              Premium custom bag manufacturers since 2003. 70 staff. SABS-tested. Mount Edgecombe, KZN.
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", lineHeight: 1.7, maxWidth: isMobile ? "100%" : 270 }}>
+              Premium custom bag manufacturers since 2003. 70 staff · SABS-tested · Mount Edgecombe, KZN.
             </p>
           </div>
+
+          {/* Products links */}
           <div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 16 }}>Products</p>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>Products</p>
             {["Conference Bags", "Cooler Bags", "School Bags", "Promotional Bags", "Shopping Bags"].map(p => (
-              <p key={p} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8 }}>{p}</p>
+              <p key={p} onClick={() => { setActivePage("Products"); window.scrollTo({ top: 0 }); }} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, cursor: "pointer", transition: "color 0.2s" }}
+                onMouseEnter={e => e.target.style.color = GOLD}
+                onMouseLeave={e => e.target.style.color = "#555"}
+              >{p}</p>
             ))}
           </div>
+
+          {/* Contact */}
           <div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
-            {[
-              { label: "031 537 3788", href: "tel:0315373788" },
-              { label: "083 468 1719", href: "tel:0834681719" },
-              { label: "leighshe.rml@gmail.com", href: "mailto:leighshe.rml@gmail.com" },
-              { label: "Mount Edgecombe, KZN", href: null },
-            ].map(c => (
-              c.href
-                ? <a key={c.label} href={c.href} style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none", transition: "color 0.2s" }}
-                    onMouseEnter={e => e.target.style.color = GOLD}
-                    onMouseLeave={e => e.target.style.color = "#666"}
-                  >{c.label}</a>
-                : <p key={c.label} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8 }}>{c.label}</p>
-            ))}
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 6, marginTop: 4,
-                fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13,
-                color: "#25D366", textDecoration: "none", transition: "opacity 0.2s",
-              }}
-              onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
-              onMouseLeave={e => e.currentTarget.style.opacity = "1"}
-            >
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>Contact</p>
+            <a href="tel:0315373788" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>031 537 3788</a>
+            <a href="tel:0834436915" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>083 443 6915</a>
+            <a href="mailto:leighshe.rml@gmail.com" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>leighshe.rml@gmail.com</a>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 10 }}>Mount Edgecombe, KZN</p>
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#25D366", textDecoration: "none" }}>
               <span>💬</span> WhatsApp Us
             </a>
           </div>
         </div>
 
-        <div style={{ 
-          borderTop: `1px solid ${GOLD}15`, paddingTop: 20, 
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          flexWrap: "wrap", gap: 12, flexDirection: isMobile && windowWidth <= 480 ? "column" : "row",
-          textAlign: "center"
-        }}>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, color: "#444", margin: 0 }}>
+        {/* Bottom bar with Developer Credit */}
+        <div style={{ borderTop: `1px solid ${GOLD}12`, paddingTop: 18, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10, flexDirection: isMobile ? "column" : "row", textAlign: "center", alignItems: "center" }}>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#3a3830", margin: 0 }}>
             © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML). All rights reserved.
           </p>
-          
-          {/* Afribiz Connect Credit */}
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, color: "#444", margin: 0 }}>
-            Developed by <a href="https://afribizconnect.co.za/" target="_blank" rel="noopener noreferrer" style={{ color: "#666", textDecoration: "none", transition: "color 0.2s", fontWeight: 600 }}
-              onMouseEnter={e => e.target.style.color = GOLD}
-              onMouseLeave={e => e.target.style.color = "#666"}
-            >Afribiz Connect</a>
-          </p>
-
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, color: "#444", margin: 0 }}>
-            Est. 2003 · SABS Standards
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#3a3830", margin: 0 }}>
+            Developed by{' '}
+            <a 
+              href="https://afribizconnect.co.za/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ 
+                color: GOLD, 
+                textDecoration: "none",
+                transition: "opacity 0.2s",
+                fontWeight: 500
+              }}
+              onMouseEnter={e => e.target.style.opacity = "0.8"}
+              onMouseLeave={e => e.target.style.opacity = "1"}
+            >
+              Afribiz
+            </a>
           </p>
         </div>
       </div>
@@ -1243,81 +850,48 @@ function Footer() {
   );
 }
 
-// Scroll To Top Button
+// ── Scroll To Top ────────────────────────────────────────────────────────────
 function ScrollToTop() {
-  const [visible, setVisible] = useState(false);
+  const [vis, setVis] = useState(false);
   const [hov, setHov] = useState(false);
-
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 400);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setVis(window.scrollY > 400);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
-
-  const handleClick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
   return (
-    <button
-      onClick={handleClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       aria-label="Scroll to top"
-      style={{
-        position: "fixed",
-        bottom: 32,
-        right: 28,
-        zIndex: 200,
-        width: 48,
-        height: 48,
-        borderRadius: "50%",
-        border: `1px solid ${hov ? GOLD : GOLD + "66"}`,
-        background: hov
-          ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`
-          : "rgba(10,10,10,0.92)",
-        backdropFilter: "blur(10px)",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: hov ? `0 0 24px ${GOLD}55` : `0 4px 20px rgba(0,0,0,0.5)`,
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0) scale(1)" : "translateY(16px) scale(0.85)",
-        transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)",
-        pointerEvents: visible ? "auto" : "none",
-      }}
-    >
-      {/* Chevron up arrow */}
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 18 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M3.5 11.5L9 5.5L14.5 11.5"
-          stroke={hov ? DARK : GOLD}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+      style={{ position: "fixed", bottom: 30, right: 26, zIndex: 200, width: 46, height: 46, borderRadius: "50%", border: `1px solid ${hov ? GOLD : GOLD + "55"}`, background: hov ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` : "rgba(15,14,10,0.93)", backdropFilter: "blur(10px)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: hov ? `0 0 22px ${GOLD}44` : "0 4px 18px rgba(0,0,0,0.5)", opacity: vis ? 1 : 0, transform: vis ? "translateY(0) scale(1)" : "translateY(14px) scale(0.85)", transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)", pointerEvents: vis ? "auto" : "none" }}>
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+        <path d="M3.5 11.5L9 5.5L14.5 11.5" stroke={hov ? DARK : GOLD} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
   );
 }
 
-// Main App Component
+// ── APP ROOT ─────────────────────────────────────────────────────────────────
 function App() {
+  const [activePage, setActivePage] = useState("Home");
+
+  const renderPage = () => {
+    switch (activePage) {
+      case "Home":     return <HomePage setActivePage={setActivePage} />;
+      case "About":    return <AboutPage />;
+      case "Products": return <ProductsPage setActivePage={setActivePage} />;
+      case "Gallery":  return <GalleryPage />;
+      case "Values":   return <ValuesPage />;
+      case "Contact":  return <ContactPage />;
+      default:         return <HomePage setActivePage={setActivePage} />;
+    }
+  };
+
   return (
     <div style={{ background: DARK, minHeight: "100vh" }}>
-      <Nav />
-      <Hero />
-      <About />
-      <Products />
-      <Gallery />
-      <OurValues />
-      <QuoteForm />
-      <Footer />
+      <Nav activePage={activePage} setActivePage={setActivePage} />
+      {renderPage()}
+      <Footer setActivePage={setActivePage} />
       <ScrollToTop />
     </div>
   );
