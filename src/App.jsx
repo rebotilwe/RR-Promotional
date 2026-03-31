@@ -32,6 +32,9 @@ const STATS = [
 const BRANDING = ["Logo Printing", "Embroidery", "Plain (No Branding)"];
 const BAG_TYPES = PRODUCTS.map((p) => p.name);
 
+// WhatsApp number (international format, no +)
+const WHATSAPP_NUMBER = "27834681719";
+
 // Custom hook for scroll animations
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -590,16 +593,9 @@ function Gallery() {
               }}
             >
               <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
+                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
                 background: `linear-gradient(135deg, ${GOLD}11, transparent)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column'
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'
               }}>
                 <div style={{ fontSize: windowWidth <= 480 ? 32 : 48, marginBottom: windowWidth <= 480 ? 12 : 16 }}>👜</div>
                 <p style={{ color: GOLD, fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 12 : 14, fontWeight: 600 }}>
@@ -614,14 +610,125 @@ function Gallery() {
         </div>
         
         <p style={{ 
-          fontFamily: "'Montserrat', sans-serif", 
-          fontSize: windowWidth <= 480 ? 11 : 13, 
-          color: "#666", 
-          marginTop: 32,
-          fontStyle: 'italic'
+          fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginTop: 32, fontStyle: 'italic'
         }}>
           * Replace with actual manufacturing photos of your products
         </p>
+      </div>
+    </section>
+  );
+}
+
+// ── NEW: Social Impact / Our Values Section ──────────────────────────────────
+function OurValues() {
+  const [ref, inView] = useInView(0.1);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth <= 768;
+
+  const values = [
+    {
+      icon: "🤝",
+      title: "Skills Development",
+      desc: "We invest in our people. Every team member is trained and upskilled, building long-term careers within our production facility.",
+    },
+    {
+      icon: "🌍",
+      title: "Community First",
+      desc: "We are committed to promoting staff from previously disadvantaged communities, creating meaningful employment and opportunity.",
+    },
+    {
+      icon: "⭐",
+      title: "Quality Without Compromise",
+      desc: "All materials are SABS-tested. We never cut corners — our reputation is built on bags that last and branding that impresses.",
+    },
+    {
+      icon: "✏️",
+      title: "Made to Your Specs",
+      desc: "We manufacture from physical samples, technical drawings, or detailed descriptions — no order is too specific.",
+    },
+  ];
+
+  return (
+    <section id="values" ref={ref} style={{
+      padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%",
+      background: DARK3,
+      position: "relative", overflow: "hidden",
+    }}>
+      {/* Decorative background pattern */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.025,
+        backgroundImage: `radial-gradient(${GOLD} 1px, transparent 1px)`,
+        backgroundSize: "32px 32px",
+        pointerEvents: "none",
+      }} />
+
+      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ textAlign: "center", marginBottom: windowWidth <= 480 ? 40 : 64 }}>
+          <SectionLabel>What Drives Us</SectionLabel>
+          <Heading center size={42}>Our Values &amp; Impact</Heading>
+          <GoldDivider />
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 13 : 15,
+            color: "#888", maxWidth: 560, margin: "0 auto",
+          }}>
+            Manufacturing excellence is only part of who we are. We believe business should uplift people and communities.
+          </p>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+          gap: windowWidth <= 480 ? 16 : 24,
+        }}>
+          {values.map((v, i) => (
+            <div
+              key={v.title}
+              style={{
+                background: DARK2,
+                border: `1px solid ${GOLD}22`,
+                borderRadius: 4,
+                padding: windowWidth <= 480 ? 24 : 36,
+                display: "flex", gap: windowWidth <= 480 ? 16 : 24, alignItems: "flex-start",
+                opacity: inView ? 1 : 0,
+                transform: inView ? "none" : "translateY(24px)",
+                transition: `all 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`,
+                position: "relative", overflow: "hidden",
+              }}
+            >
+              {/* Gold left accent bar */}
+              <div style={{
+                position: "absolute", left: 0, top: 20, bottom: 20, width: 3,
+                background: `linear-gradient(to bottom, transparent, ${GOLD}, transparent)`,
+                borderRadius: 2,
+              }} />
+              <div style={{
+                fontSize: windowWidth <= 480 ? 28 : 36, flexShrink: 0,
+                width: windowWidth <= 480 ? 48 : 60, height: windowWidth <= 480 ? 48 : 60,
+                background: `${GOLD}12`, border: `1px solid ${GOLD}33`,
+                borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {v.icon}
+              </div>
+              <div>
+                <h3 style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: windowWidth <= 480 ? 17 : 20, fontWeight: 700, color: "#fff",
+                  margin: "0 0 8px",
+                }}>{v.title}</h3>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: windowWidth <= 480 ? 12 : 14, color: "#888", lineHeight: 1.7, margin: 0,
+                }}>{v.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -635,10 +742,12 @@ function QuoteForm() {
   const [form, setForm] = useState({
     name: "", company: "", email: "", phone: "",
     bagType: "", dimensions: "", quantity: "", branding: "", notes: "",
+    logoFile: null, logoFileName: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -648,6 +757,13 @@ function QuoteForm() {
 
   const setFormField = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setForm(f => ({ ...f, logoFile: file, logoFileName: file.name }));
+    }
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
@@ -655,16 +771,18 @@ function QuoteForm() {
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) => {
-        formData.append(key, value);
+        if (key === "logoFile" && value) {
+          formData.append("logo", value);
+        } else if (key !== "logoFile" && key !== "logoFileName") {
+          formData.append(key, value);
+        }
       });
       
-      // Replace with your actual Formspree endpoint
+      // Replace YOUR_FORM_ID with the actual Formspree endpoint once client provides it
       const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
       
       if (response.ok) {
@@ -695,6 +813,34 @@ function QuoteForm() {
 
   const isMobile = windowWidth <= 768;
 
+  // WhatsApp CTA
+  const WhatsAppButton = () => (
+    <a
+      href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27d%20like%20to%20request%20a%20quote%20for%20custom%20bags.`}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: "flex", alignItems: "center", gap: 10,
+        background: "#128C7E22", border: "1px solid #128C7E66",
+        borderRadius: 2, padding: windowWidth <= 480 ? "10px 14px" : "12px 18px",
+        textDecoration: "none", marginTop: windowWidth <= 480 ? 20 : 28,
+        transition: "background 0.2s, border-color 0.2s",
+      }}
+      onMouseEnter={e => { e.currentTarget.style.background = "#128C7E33"; e.currentTarget.style.borderColor = "#25D366"; }}
+      onMouseLeave={e => { e.currentTarget.style.background = "#128C7E22"; e.currentTarget.style.borderColor = "#128C7E66"; }}
+    >
+      {/* WhatsApp SVG icon */}
+      <svg width={windowWidth <= 480 ? 18 : 22} height={windowWidth <= 480 ? 18 : 22} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="16" fill="#25D366" />
+        <path d="M23.5 8.5A10.44 10.44 0 0 0 16 5.5C10.75 5.5 6.5 9.75 6.5 15a9.44 9.44 0 0 0 1.27 4.74L6.5 26.5l6.93-1.82A9.44 9.44 0 0 0 16 25.5c5.25 0 9.5-4.25 9.5-9.5a9.44 9.44 0 0 0-2-6.5zm-7.5 14.6a7.85 7.85 0 0 1-4-.96l-.29-.17-3 .79.8-2.93-.19-.3A7.9 7.9 0 1 1 16 23.1zm4.33-5.9c-.24-.12-1.4-.69-1.61-.77s-.37-.12-.53.12-.61.77-.75.93-.28.18-.51.06a6.43 6.43 0 0 1-1.9-1.17 7.13 7.13 0 0 1-1.31-1.63c-.14-.24 0-.37.1-.49s.24-.28.36-.42a1.6 1.6 0 0 0 .24-.4.44.44 0 0 0 0-.42c-.06-.12-.53-1.28-.73-1.75s-.38-.4-.53-.4h-.45a.87.87 0 0 0-.63.3 2.65 2.65 0 0 0-.82 1.97 4.6 4.6 0 0 0 .96 2.44 10.54 10.54 0 0 0 4.03 3.57c.56.24 1 .39 1.34.5a3.22 3.22 0 0 0 1.48.09 2.43 2.43 0 0 0 1.59-1.12 1.97 1.97 0 0 0 .14-1.12c-.06-.1-.22-.16-.46-.28z" fill="#fff"/>
+      </svg>
+      <div>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 12, fontWeight: 700, color: "#25D366", margin: 0, letterSpacing: "0.1em" }}>WHATSAPP US</p>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 11, color: "#888", margin: 0 }}>083 468 1719 · Quick response</p>
+      </div>
+    </a>
+  );
+
   return (
     <section id="contact" ref={ref} style={{ padding: windowWidth <= 480 ? "50px 4%" : windowWidth <= 768 ? "80px 5%" : "100px 5%", background: DARK2, position: "relative" }}>
       {windowWidth > 768 && (
@@ -712,7 +858,7 @@ function QuoteForm() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 20 : 24, alignItems: isMobile ? "center" : "flex-start" }}>
             {[
-              { icon: "📞", label: "Phone", val: "031 537 3788 / 083 443 6915" },
+              { icon: "📞", label: "Phone", val: "031 537 3788 / 083 468 1719" },
               { icon: "✉️", label: "Email", val: "leighshe.rml@gmail.com" },
               { icon: "📍", label: "Location", val: "Mount Edgecombe, KwaZulu-Natal" },
             ].map(c => (
@@ -729,6 +875,9 @@ function QuoteForm() {
               </div>
             ))}
           </div>
+
+          {/* WhatsApp CTA */}
+          <WhatsAppButton />
         </div>
 
         <div style={{ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateX(30px)", transition: "all 0.8s ease 0.2s" }}>
@@ -741,7 +890,7 @@ function QuoteForm() {
                 <p style={{ fontFamily: "'Montserrat', sans-serif", color: "#888", fontSize: windowWidth <= 480 ? 12 : 14, lineHeight: 1.7 }}>
                   Thank you, <strong style={{ color: GOLD }}>{form.name}</strong>. We'll review your specifications and get back to you shortly.
                 </p>
-                <button onClick={() => { setSubmitted(false); setStep(1); setForm({ name: "", company: "", email: "", phone: "", bagType: "", dimensions: "", quantity: "", branding: "", notes: "" }); }}
+                <button onClick={() => { setSubmitted(false); setStep(1); setForm({ name: "", company: "", email: "", phone: "", bagType: "", dimensions: "", quantity: "", branding: "", notes: "", logoFile: null, logoFileName: "" }); }}
                   style={{ marginTop: 20, background: "none", border: `1px solid ${GOLD}55`, borderRadius: 2, color: GOLD, padding: "8px 20px", cursor: "pointer", fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, letterSpacing: "0.15em" }}>
                   SUBMIT ANOTHER
                 </button>
@@ -750,19 +899,15 @@ function QuoteForm() {
               <>
                 {error && (
                   <div style={{
-                    background: "rgba(255,0,0,0.1)",
-                    border: `1px solid #ff0000`,
-                    borderRadius: 4,
-                    padding: "10px",
-                    marginBottom: "16px",
-                    color: "#ff6666",
-                    fontSize: windowWidth <= 480 ? 11 : 13,
-                    textAlign: "center"
+                    background: "rgba(255,0,0,0.1)", border: `1px solid #ff0000`,
+                    borderRadius: 4, padding: "10px", marginBottom: "16px",
+                    color: "#ff6666", fontSize: windowWidth <= 480 ? 11 : 13, textAlign: "center"
                   }}>
                     {error}
                   </div>
                 )}
                 
+                {/* Step indicators */}
                 <div style={{ display: "flex", gap: 8, marginBottom: windowWidth <= 480 ? 24 : 32 }}>
                   {[1, 2, 3].map(s => (
                     <div key={s} style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
@@ -779,13 +924,14 @@ function QuoteForm() {
                   ))}
                 </div>
 
+                {/* Step 1 — Contact Details */}
                 {step === 1 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 16 : 20 }}>
                     <p style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, color: "#fff", margin: "0 0 8px" }}>Your Details</p>
                     <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
                       <div>
                         <label style={labelStyle}>Full Name *</label>
-                        <input value={form.name} onChange={setFormField("name")} placeholder="Jane Smith" style={inputStyle} 
+                        <input value={form.name} onChange={setFormField("name")} placeholder="Jane Smith" style={inputStyle}
                           onFocus={e => e.target.style.borderColor = GOLD} onBlur={e => e.target.style.borderColor = `${GOLD}33`} />
                       </div>
                       <div>
@@ -813,6 +959,7 @@ function QuoteForm() {
                   </div>
                 )}
 
+                {/* Step 2 — Bag Specs + Logo Upload */}
                 {step === 2 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 16 : 20 }}>
                     <p style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, color: "#fff", margin: "0 0 8px" }}>Bag Specifications</p>
@@ -847,6 +994,62 @@ function QuoteForm() {
                         ))}
                       </div>
                     </div>
+
+                    {/* ── Logo / Artwork Upload ── */}
+                    <div>
+                      <label style={labelStyle}>Upload Logo / Artwork</label>
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        style={{
+                          width: "100%", boxSizing: "border-box",
+                          background: "#0e0e0e", border: `1px dashed ${form.logoFileName ? GOLD : GOLD + "44"}`,
+                          borderRadius: 2, padding: windowWidth <= 480 ? "14px 12px" : "18px 16px",
+                          cursor: "pointer", textAlign: "center",
+                          transition: "border-color 0.2s, background 0.2s",
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.background = `${GOLD}08`; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = form.logoFileName ? GOLD : `${GOLD}44`; e.currentTarget.style.background = "#0e0e0e"; }}
+                      >
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps"
+                          onChange={handleFileChange}
+                          style={{ display: "none" }}
+                        />
+                        {form.logoFileName ? (
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+                            <span style={{ fontSize: 20 }}>✅</span>
+                            <div>
+                              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: GOLD, margin: 0, fontWeight: 600 }}>{form.logoFileName}</p>
+                              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, color: "#666", margin: "2px 0 0" }}>Click to change file</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <p style={{ fontSize: windowWidth <= 480 ? 22 : 28, marginBottom: 6 }}>📎</p>
+                            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#888", margin: 0 }}>
+                              Click to upload your logo or artwork
+                            </p>
+                            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, color: "#555", margin: "4px 0 0" }}>
+                              PNG, JPG, SVG, PDF, AI, EPS accepted
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      {/* Clear file button */}
+                      {form.logoFileName && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setForm(f => ({ ...f, logoFile: null, logoFileName: "" })); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                          style={{
+                            marginTop: 6, background: "none", border: "none", cursor: "pointer",
+                            fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10,
+                            color: "#666", letterSpacing: "0.1em", textDecoration: "underline",
+                          }}
+                        >Remove file</button>
+                      )}
+                    </div>
+
                     <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexDirection: isMobile ? "column" : "row" }}>
                       <button onClick={() => setStep(1)} style={{ 
                         background: "none", border: `1px solid ${GOLD}33`, borderRadius: 2, 
@@ -863,13 +1066,14 @@ function QuoteForm() {
                   </div>
                 )}
 
+                {/* Step 3 — Notes & Review */}
                 {step === 3 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: windowWidth <= 480 ? 16 : 20 }}>
                     <p style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 18 : 20, color: "#fff", margin: "0 0 8px" }}>Additional Notes</p>
                     <div>
                       <label style={labelStyle}>Special Requirements / Notes</label>
                       <textarea value={form.notes} onChange={setFormField("notes")} rows={4} 
-                        placeholder="Describe any specific requirements, materials, colors, or attach reference images info..." 
+                        placeholder="Describe any specific requirements, materials, colors..." 
                         style={{ ...inputStyle, resize: "vertical" }} />
                     </div>
                     <div style={{ background: "#0a0a0a", border: `1px solid ${GOLD}22`, borderRadius: 2, padding: windowWidth <= 480 ? 12 : 20 }} className="quote-summary">
@@ -878,11 +1082,12 @@ function QuoteForm() {
                         ["Contact", form.name + (form.company ? ` · ${form.company}` : "")],
                         ["Bag Type", form.bagType],
                         ["Quantity", form.quantity],
-                        ["Branding", form.branding || "Not specified"]
+                        ["Branding", form.branding || "Not specified"],
+                        ["Logo / Artwork", form.logoFileName || "Not uploaded"],
                       ].map(([k, v]) => (
                         <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, flexDirection: isMobile && windowWidth <= 375 ? "column" : "row", gap: isMobile && windowWidth <= 375 ? 4 : 0 }}>
                           <span style={{ fontSize: windowWidth <= 480 ? 10 : 12, color: "#666" }}>{k}</span>
-                          <span style={{ fontSize: windowWidth <= 480 ? 10 : 12, color: "#ccc", fontWeight: 600 }}>{v}</span>
+                          <span style={{ fontSize: windowWidth <= 480 ? 10 : 12, color: "#ccc", fontWeight: 600, maxWidth: "60%", textAlign: "right", wordBreak: "break-word" }}>{v}</span>
                         </div>
                       ))}
                     </div>
@@ -962,12 +1167,7 @@ function Footer() {
               <img 
                 src={logo} 
                 alt="RR Promotional Logo" 
-                style={{ 
-                  height: logoSize, 
-                  width: 'auto', 
-                  objectFit: 'contain',
-                  borderRadius: 4,
-                }} 
+                style={{ height: logoSize, width: 'auto', objectFit: 'contain', borderRadius: 4 }} 
               />
               <div>
                 <div style={{ fontFamily: "'Playfair Display', serif", fontSize: windowWidth <= 480 ? 14 : 16, fontWeight: 800, color: "#fff" }}>RR PROMOTIONAL</div>
@@ -979,41 +1179,130 @@ function Footer() {
             </p>
           </div>
           <div>
-            <p style={{ 
-              fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.25em", 
-              color: GOLD, textTransform: "uppercase", marginBottom: 16 
-            }}>Products</p>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 16 }}>Products</p>
             {["Conference Bags", "Cooler Bags", "School Bags", "Promotional Bags", "Shopping Bags"].map(p => (
               <p key={p} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8 }}>{p}</p>
             ))}
           </div>
           <div>
-            <p style={{ 
-              fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.25em", 
-              color: GOLD, textTransform: "uppercase", marginBottom: 16 
-            }}>Contact</p>
-            {["031 537 3788", "083 443 6915", "leighshe.rml@gmail.com", "Mount Edgecombe, KZN"].map(c => (
-              <p key={c} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8 }}>{c}</p>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 9 : 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 16 }}>Contact</p>
+            {[
+              { label: "031 537 3788", href: "tel:0315373788" },
+              { label: "083 468 1719", href: "tel:0834681719" },
+              { label: "leighshe.rml@gmail.com", href: "mailto:leighshe.rml@gmail.com" },
+              { label: "Mount Edgecombe, KZN", href: null },
+            ].map(c => (
+              c.href
+                ? <a key={c.label} href={c.href} style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none", transition: "color 0.2s" }}
+                    onMouseEnter={e => e.target.style.color = GOLD}
+                    onMouseLeave={e => e.target.style.color = "#666"}
+                  >{c.label}</a>
+                : <p key={c.label} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13, color: "#666", marginBottom: 8 }}>{c.label}</p>
             ))}
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 6, marginTop: 4,
+                fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 11 : 13,
+                color: "#25D366", textDecoration: "none", transition: "opacity 0.2s",
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = "0.7"}
+              onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+            >
+              <span>💬</span> WhatsApp Us
+            </a>
           </div>
         </div>
 
         <div style={{ 
           borderTop: `1px solid ${GOLD}15`, paddingTop: 20, 
-          display: "flex", justifyContent: "space-between", 
-          alignItems: "center", flexWrap: "wrap", gap: 12, 
-          flexDirection: isMobile && windowWidth <= 480 ? "column" : "row",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          flexWrap: "wrap", gap: 12, flexDirection: isMobile && windowWidth <= 480 ? "column" : "row",
           textAlign: "center"
         }}>
           <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, color: "#444", margin: 0 }}>
             © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML). All rights reserved.
           </p>
+          
+          {/* Afribiz Connect Credit */}
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, color: "#444", margin: 0 }}>
+            Developed by <a href="https://afribizconnect.co.za/" target="_blank" rel="noopener noreferrer" style={{ color: "#666", textDecoration: "none", transition: "color 0.2s", fontWeight: 600 }}
+              onMouseEnter={e => e.target.style.color = GOLD}
+              onMouseLeave={e => e.target.style.color = "#666"}
+            >Afribiz Connect</a>
+          </p>
+
           <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: windowWidth <= 480 ? 10 : 12, color: "#444", margin: 0 }}>
             Est. 2003 · SABS Standards
           </p>
         </div>
       </div>
     </footer>
+  );
+}
+
+// Scroll To Top Button
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+  const [hov, setHov] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleClick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  return (
+    <button
+      onClick={handleClick}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      aria-label="Scroll to top"
+      style={{
+        position: "fixed",
+        bottom: 32,
+        right: 28,
+        zIndex: 200,
+        width: 48,
+        height: 48,
+        borderRadius: "50%",
+        border: `1px solid ${hov ? GOLD : GOLD + "66"}`,
+        background: hov
+          ? `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`
+          : "rgba(10,10,10,0.92)",
+        backdropFilter: "blur(10px)",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: hov ? `0 0 24px ${GOLD}55` : `0 4px 20px rgba(0,0,0,0.5)`,
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0) scale(1)" : "translateY(16px) scale(0.85)",
+        transition: "all 0.35s cubic-bezier(0.22,1,0.36,1)",
+        pointerEvents: visible ? "auto" : "none",
+      }}
+    >
+      {/* Chevron up arrow */}
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 18 18"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3.5 11.5L9 5.5L14.5 11.5"
+          stroke={hov ? DARK : GOLD}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }
 
@@ -1026,8 +1315,10 @@ function App() {
       <About />
       <Products />
       <Gallery />
+      <OurValues />
       <QuoteForm />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
