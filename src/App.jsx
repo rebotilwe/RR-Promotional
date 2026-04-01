@@ -9,6 +9,9 @@ import promoBackpack from './assets/products/promoBag.avif';
 import shoppingBag from './assets/products/shoppingBag.avif';
 import conference from './assets/products/conferenceBag.avif'
 import handbag from './assets/products/hand.avif';
+import business from './assets/products/business.jpeg';
+import coolBag from './assets/products/coolBag.jpeg';
+import girly from './assets/products/girly.jpeg';
 // import togBag from './assets/products/tog-bag.jpg';
 // import misc from './assets/products/misc.jpg';
 
@@ -40,13 +43,13 @@ const PRODUCTS = [
     name: "Conference Bags",
     icon: "💼",
     desc: "Premium corporate conference bags tailored for your brand.",
-    image: conference,
+    image: business,
   },
   {
     name: "Cooler Bags",
     icon: "🧊",
     desc: "Insulated cooler bags with custom branding options.",
-    image: coolerBag,
+    image: coolBag,
   },
   {
     name: "School Backpacks",
@@ -76,7 +79,7 @@ const PRODUCTS = [
     name: "Handbags",
     icon: "👜",
     desc: "Stylish handbags manufactured to client specifications.",
-    image:handbag,
+    image:girly,
   },
   {
     name: "Tog Bags",
@@ -141,7 +144,7 @@ const SUBLIMATION_ITEMS = [
 const GALLERY_ITEMS = [
   {
     label: "Corporate Conference Bags",
-    image: conference,
+    image: business,
   },
   {
     label: "Custom Branded Backpacks",
@@ -161,7 +164,7 @@ const GALLERY_ITEMS = [
   },
   {
     label: "Cooler & Event Bags",
-    image: coolerBag,
+    image: coolBag,
   },
 ];
  const STATS = [
