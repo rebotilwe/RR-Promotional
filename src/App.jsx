@@ -87,7 +87,7 @@ const PRODUCTS = [
     name: "Miscellaneous",
     icon: "📦",
     desc: "Custom solutions for any bag type or specification.",
-    image: "https://images.unsplash.com/photo-1520975922327-6a3c1c3c0a3f?w=600&h=400&fit=crop&auto=format",
+    image:  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format",
   },
 ];
 
