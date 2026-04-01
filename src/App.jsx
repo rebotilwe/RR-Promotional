@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import './App.css';
 import logo from './assets/logo.jpeg';
 import conferenceBag from './assets/products/conference.jpg';
-import coolerBag from './assets/products/cooler.jpg';
+import coolerBag from './assets/products/coolerBag.avif';
 import school from './assets/products/school.avif';
 import schoolTog from './assets/products/schoolTop.avif';
-import promoBackpack from './assets/products/promo.avif';
+import promoBackpack from './assets/products/promoBag.avif';
 import shoppingBag from './assets/products/shoppingBag.avif';
-// import handbag from './assets/products/handbag.jpg';
+import conference from './assets/products/conferenceBag.avif'
+import handbag from './assets/products/hand.avif';
 // import togBag from './assets/products/tog-bag.jpg';
 // import misc from './assets/products/misc.jpg';
 
@@ -39,7 +40,7 @@ const PRODUCTS = [
     name: "Conference Bags",
     icon: "💼",
     desc: "Premium corporate conference bags tailored for your brand.",
-    image: conferenceBag,
+    image: conference,
   },
   {
     name: "Cooler Bags",
@@ -75,7 +76,7 @@ const PRODUCTS = [
     name: "Handbags",
     icon: "👜",
     desc: "Stylish handbags manufactured to client specifications.",
-    image:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=400&fit=crop&auto=format",
+    image:handbag,
   },
   {
     name: "Tog Bags",
@@ -140,7 +141,7 @@ const SUBLIMATION_ITEMS = [
 const GALLERY_ITEMS = [
   {
     label: "Corporate Conference Bags",
-    image: conferenceBag,
+    image: conference,
   },
   {
     label: "Custom Branded Backpacks",
