@@ -1,40 +1,179 @@
 import { useState, useEffect, useRef } from "react";
 import './App.css';
 import logo from './assets/logo.jpeg';
+import conferenceBag from './assets/products/conference.jpg';
+import coolerBag from './assets/products/cooler.jpg';
+import school from './assets/products/school.avif';
+import schoolTog from './assets/products/schoolTop.avif';
+import promoBackpack from './assets/products/promo.avif';
+import shoppingBag from './assets/products/shoppingBag.avif';
+// import handbag from './assets/products/handbag.jpg';
+// import togBag from './assets/products/tog-bag.jpg';
+// import misc from './assets/products/misc.jpg';
+
+//Sublimation
+import fullSports from './assets/sublimation/fullSports.avif';
+import golf from './assets/sublimation/golf.avif';
+import sport from './assets/sublimation/sport.avif';
+import tracksuit from './assets/sublimation/tracksuits.avif';
+import workers from './assets/sublimation/workers.png';
 
 const GOLD = "#C9A84C";
 const GOLD_LIGHT = "#E8C96A";
+const BAG_MFR_COLOR = "#F0D080"; // Much brighter than GOLD — visible on dark bg
 const DARK = "#0f0e0a";
 const DARK2 = "#161510";
 const DARK3 = "#1e1c14";
 const DARK_WARM = "#1a1810";
 
-const PAGES = ["Home", "About", "Products", "Gallery", "Values", "Contact"];
+// ── Updated: Sublimation added, email updated, address updated ──
+const EMAIL = "sales@rrmanufacturers.co.za";
+const LOCATION = "Verulam, KwaZulu-Natal";
+const LOCATION_SHORT = "Verulam, KZN";
+const WHATSAPP_NUMBER = "27834436915";
+
+const PAGES = ["Home", "About", "Products", "Sublimation", "Gallery", "Values", "Contact"];
 
 const PRODUCTS = [
-  { name: "Conference Bags", icon: "💼", desc: "Premium corporate conference bags tailored for your brand.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Conference+Bag" },
-  { name: "Cooler Bags", icon: "🧊", desc: "Insulated cooler bags with custom branding options.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Cooler+Bag" },
-  { name: "School Backpacks", icon: "🎒", desc: "Durable school backpacks manufactured to SABS standards.", image: "https://placehold.co/600x400/f5f5f5/999999?text=School+Backpack" },
-  { name: "School Tog Bags", icon: "🏫", desc: "Spacious tog bags ideal for learners at all levels.", image: "https://placehold.co/600x400/f5f5f5/999999?text=School+Tog+Bag" },
-  { name: "Promo Backpacks", icon: "🎽", desc: "Eye-catching promotional backpacks for campaigns.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Promo+Backpack" },
-  { name: "Shopping Bags", icon: "🛍️", desc: "Reusable branded shopping bags for retail and events.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Shopping+Bag" },
-  { name: "Handbags", icon: "👜", desc: "Stylish handbags manufactured to client specifications.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Handbag" },
-  { name: "Tog Bags", icon: "🗃️", desc: "Versatile tog bags for corporate gifting and sports.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Tog+Bag" },
-  { name: "Miscellaneous", icon: "📦", desc: "Custom solutions for any bag type or specification.", image: "https://placehold.co/600x400/f5f5f5/999999?text=Custom+Bags" },
+  {
+    name: "Conference Bags",
+    icon: "💼",
+    desc: "Premium corporate conference bags tailored for your brand.",
+    image: conferenceBag,
+  },
+  {
+    name: "Cooler Bags",
+    icon: "🧊",
+    desc: "Insulated cooler bags with custom branding options.",
+    image: coolerBag,
+  },
+  {
+    name: "School Backpacks",
+    icon: "🎒",
+    desc: "Durable school backpacks manufactured to SABS standards.",
+    image: school,
+  },
+  {
+    name: "School Tog Bags",
+    icon: "🏫",
+    desc: "Spacious tog bags ideal for learners at all levels.",
+    image: schoolTog,
+  },
+  {
+    name: "Promo Backpacks",
+    icon: "🎽",
+    desc: "Eye-catching promotional backpacks for campaigns.",
+    image: promoBackpack,
+  },
+  {
+    name: "Shopping Bags",
+    icon: "🛍️",
+    desc: "Reusable branded shopping bags for retail and events.",
+    image: shoppingBag,
+  },
+  {
+    name: "Handbags",
+    icon: "👜",
+    desc: "Stylish handbags manufactured to client specifications.",
+    image:"https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    name: "Tog Bags",
+    icon: "🗃️",
+    desc: "Versatile tog bags for corporate gifting and sports.",
+    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    name: "Miscellaneous",
+    icon: "📦",
+    desc: "Custom solutions for any bag type or specification.",
+    image: "https://images.unsplash.com/photo-1520975922327-6a3c1c3c0a3f?w=600&h=400&fit=crop&auto=format",
+  },
 ];
 
-const STATS = [
+const SUBLIMATION_ITEMS = [
+  {
+    icon: "🏃",
+    name: "Tracksuits",
+    desc: "Full sublimation tracksuits with vibrant all-over prints — perfect for teams, schools, and corporates.",
+    // Athletes in branded sublimated tracksuits
+    image:tracksuit,
+  },
+  {
+    icon: "🔧",
+    name: "Workwear",
+    desc: "Custom branded workwear and uniforms that keep your team looking professional on site.",
+    // Workers in branded / uniform workwear
+    image: workers,
+  },
+  {
+    icon: "⛳",
+    name: "Golf Shirts",
+    desc: "Premium sublimated golf shirts ideal for corporate events, sponsorships, and staff uniforms.",
+    // Clean polo / golf shirt on hanger or flat lay
+    image: golf,
+  },
+  {
+    icon: "👕",
+    name: "T-Shirts & Jerseys",
+    desc: "Fully customised sublimated t-shirts and jerseys for sports clubs, events, and promotions.",
+    // Bright sublimated sports jersey / t-shirt
+    image: sport,
+  },
+  {
+    icon: "🎽",
+    name: "Sports Kits",
+    desc: "Complete sporting kits including shorts, socks, and tops — all produced in-house.",
+    // Full sports kit / team uniforms
+    image: fullSports,
+  },
+  {
+    icon: "🖨️",
+    name: "Custom Branding",
+    desc: "In-house sublimation, embroidery, and silk screen printing — all under one roof.",
+    // Embroidery / branding machine or branded garment close-up
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format",
+  },
+];
+
+// Gallery images — real photos matched to bag manufacturing & branding context
+const GALLERY_ITEMS = [
+  {
+    label: "Corporate Conference Bags",
+    image: conferenceBag,
+  },
+  {
+    label: "Custom Branded Backpacks",
+    image: "https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    label: "Promotional Shopping Bags",
+    image: shoppingBag,
+  },
+  {
+    label: "School Bags & Tog Bags",
+    image: school,
+  },
+  {
+    label: "In-House Branding",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    label: "Cooler & Event Bags",
+    image: coolerBag,
+  },
+];
+ const STATS = [
   { num: "20+", label: "Years Experience" },
   { num: "70+", label: "Production Staff" },
   { num: "10+", label: "Bag Categories" },
   { num: "SABS", label: "Standards Tested" },
 ];
 
-const BRANDING = ["Logo Printing", "Embroidery", "Plain (No Branding)"];
+const BRANDING = ["Logo Printing", "Embroidery", "Sublimation", "Plain (No Branding)"];
 const BAG_TYPES = PRODUCTS.map((p) => p.name);
-const WHATSAPP_NUMBER = "27834436915";
 
-// ── Scroll animation hook ───────────────────────────────────────────────────
+// ── Hooks ──────────────────────────────────────────────────────────────────
 function useInView(threshold = 0.12) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -51,7 +190,6 @@ function useInView(threshold = 0.12) {
   return [ref, inView];
 }
 
-// ── Responsive window width hook ───────────────────────────────────────────
 function useWindowWidth() {
   const [w, setW] = useState(window.innerWidth);
   useEffect(() => {
@@ -62,7 +200,7 @@ function useWindowWidth() {
   return w;
 }
 
-// ── Crown SVG ──────────────────────────────────────────────────────────────
+// ── Shared UI components ────────────────────────────────────────────────────
 function Crown({ size = 40 }) {
   const w = useWindowWidth();
   const s = w <= 480 ? size * 0.7 : w <= 768 ? size * 0.85 : size;
@@ -77,7 +215,6 @@ function Crown({ size = 40 }) {
   );
 }
 
-// ── Gold Divider ────────────────────────────────────────────────────────────
 function GoldDivider() {
   const w = useWindowWidth();
   return (
@@ -89,7 +226,6 @@ function GoldDivider() {
   );
 }
 
-// ── Section Label ───────────────────────────────────────────────────────────
 function SectionLabel({ children }) {
   const w = useWindowWidth();
   return (
@@ -104,7 +240,6 @@ function SectionLabel({ children }) {
   );
 }
 
-// ── Heading ─────────────────────────────────────────────────────────────────
 function Heading({ children, size = 40 }) {
   const w = useWindowWidth();
   let s = size;
@@ -120,11 +255,10 @@ function Heading({ children, size = 40 }) {
   );
 }
 
-// ── Global keyframes injected once ─────────────────────────────────────────
 const KEYFRAMES = `
   @keyframes pulse { 0%,100%{opacity:.35;transform:scale(1)} 50%{opacity:.7;transform:scale(1.06)} }
   @keyframes float { 0%,100%{transform:translate(50%,-50%) translateY(0)} 50%{transform:translate(50%,-50%) translateY(-18px)} }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
 `;
 
 // ── Navigation ──────────────────────────────────────────────────────────────
@@ -157,25 +291,26 @@ function Nav({ activePage, setActivePage }) {
       transition: "all 0.4s ease",
       padding: w <= 480 ? "0 3%" : "0 5%",
     }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: w <= 480 ? 60 : 72 }}>
+      <div style={{ maxWidth: 1300, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: w <= 480 ? 60 : 72 }}>
 
         {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: w <= 480 ? 8 : 12, cursor: "pointer" }} onClick={() => goTo("Home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: w <= 480 ? 8 : 12, cursor: "pointer", flexShrink: 0 }} onClick={() => goTo("Home")}>
           <img src={logo} alt="RR Logo" style={{ height: logoH, width: "auto", objectFit: "contain", borderRadius: 4 }} />
           <div>
             <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 17, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", lineHeight: 1.2 }}>RR PROMOTIONAL</div>
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 7 : 9, letterSpacing: w <= 480 ? "0.2em" : "0.35em", color: GOLD, fontWeight: 700 }}>BAG MANUFACTURERS</div>
+            {/* ── BRIGHTER "BAG MANUFACTURERS" text ── */}
+            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 7 : 9, letterSpacing: w <= 480 ? "0.2em" : "0.35em", color: BAG_MFR_COLOR, fontWeight: 700 }}>BAG MANUFACTURERS</div>
           </div>
         </div>
 
         {/* Desktop nav links */}
         {!isMobile && (
-          <div style={{ display: "flex", gap: w <= 1024 ? 18 : 28 }}>
+          <div style={{ display: "flex", gap: w <= 1100 ? 12 : 20 }}>
             {PAGES.map(p => (
               <button key={p} onClick={() => goTo(p)} style={{
                 background: "none", border: "none", cursor: "pointer",
-                fontFamily: "'Montserrat', sans-serif", fontSize: w <= 1024 ? 10 : 11, fontWeight: 600,
-                letterSpacing: "0.15em", textTransform: "uppercase",
+                fontFamily: "'Montserrat', sans-serif", fontSize: w <= 1100 ? 9 : 10, fontWeight: 600,
+                letterSpacing: "0.12em", textTransform: "uppercase",
                 color: activePage === p ? GOLD : "#bbb",
                 borderBottom: activePage === p ? `1px solid ${GOLD}` : "1px solid transparent",
                 paddingBottom: 2, transition: "color 0.2s, border-color 0.2s",
@@ -191,9 +326,9 @@ function Nav({ activePage, setActivePage }) {
         {!isMobile && (
           <button onClick={() => goTo("Contact")} style={{
             background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
-            border: "none", borderRadius: 2, cursor: "pointer",
-            fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 700,
-            letterSpacing: "0.15em", color: DARK, padding: "10px 22px",
+            border: "none", borderRadius: 2, cursor: "pointer", flexShrink: 0,
+            fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 700,
+            letterSpacing: "0.12em", color: DARK, padding: "9px 18px",
             textTransform: "uppercase", transition: "opacity 0.2s",
           }}
             onMouseEnter={e => e.target.style.opacity = "0.85"}
@@ -245,7 +380,6 @@ function HomePage({ setActivePage }) {
   const [loaded, setLoaded] = useState(false);
   const w = useWindowWidth();
   useEffect(() => { setTimeout(() => setLoaded(true), 80); }, []);
-
   const hSize = w > 768 ? 58 : w > 480 ? 44 : 34;
 
   return (
@@ -256,24 +390,17 @@ function HomePage({ setActivePage }) {
       padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px",
     }}>
       <style>{KEYFRAMES}</style>
-
-      {/* Warm radial glow */}
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 65% 45%, ${GOLD}10 0%, transparent 65%)`, pointerEvents: "none" }} />
-
-      {/* Subtle grid */}
       <div style={{ position: "absolute", inset: 0, opacity: 0.025, backgroundImage: `linear-gradient(${GOLD} 1px, transparent 1px), linear-gradient(90deg, ${GOLD} 1px, transparent 1px)`, backgroundSize: w <= 480 ? "40px 40px" : "56px 56px" }} />
-
-      {/* Pulsing orb */}
       <div style={{ position: "absolute", right: "5%", top: "18%", width: w <= 480 ? 180 : 460, height: w <= 480 ? 180 : 460, borderRadius: "50%", background: `radial-gradient(circle, ${GOLD}1a 0%, transparent 70%)`, animation: "pulse 9s ease-in-out infinite", pointerEvents: "none" }} />
-
-      {/* Floating rings */}
       {w > 768 && [300, 400, 500].map((s, i) => (
         <div key={i} style={{ position: "absolute", right: "12%", top: "50%", transform: "translate(50%, -50%)", width: s, height: s, borderRadius: "50%", border: `1px solid ${GOLD}${["30", "20", "10"][i]}`, animation: `float ${10 + i * 2}s ease-in-out infinite`, pointerEvents: "none" }} />
       ))}
 
       <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", position: "relative", zIndex: 2, textAlign: "center" }}>
         <div style={{ opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(28px)", transition: "all 0.9s cubic-bezier(0.22,1,0.36,1)" }}>
-          <SectionLabel>Est. 2003 · Mount Edgecombe, KZN</SectionLabel>
+          {/* ── Updated location label ── */}
+          <SectionLabel>Est. 2003 · {LOCATION_SHORT}</SectionLabel>
           <div style={{ maxWidth: 760, margin: "0 auto" }}>
             <Heading size={hSize}>
               Premium Custom<br />
@@ -282,10 +409,20 @@ function HomePage({ setActivePage }) {
               </span>
             </Heading>
           </div>
+
+          {/* ── Tagline from brochure ── */}
+          <p style={{
+            fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 17,
+            color: GOLD_LIGHT, fontStyle: "italic", margin: "14px 0 0",
+            letterSpacing: "0.04em",
+          }}>
+            "Setting Your Promotional Ideas Free!"
+          </p>
+
           <GoldDivider />
           <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 16, lineHeight: 1.75, color: "#bbb", maxWidth: 620, margin: "0 auto 36px", textAlign: "center" }}>
-            From corporate branding to school essentials — we manufacture to your exact specifications.
-            70 skilled staff · SABS-tested materials · In-house screen printing &amp; embroidery.
+            From corporate bags to sublimated workwear — we manufacture to your exact specifications.
+            70 skilled staff · SABS-tested materials · In-house screen printing, embroidery &amp; sublimation.
           </p>
 
           <div style={{ display: "flex", gap: w <= 480 ? 12 : 16, flexWrap: "wrap", justifyContent: "center" }}>
@@ -309,9 +446,18 @@ function HomePage({ setActivePage }) {
               onMouseEnter={e => { e.target.style.borderColor = GOLD; e.target.style.background = `${GOLD}11`; }}
               onMouseLeave={e => { e.target.style.borderColor = `${GOLD}66`; e.target.style.background = "transparent"; }}
             >Our Products</button>
+
+            <button onClick={() => setActivePage("Sublimation")} style={{
+              background: "transparent", border: `1px solid ${GOLD}44`, borderRadius: 2, cursor: "pointer",
+              fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, fontWeight: 600,
+              letterSpacing: "0.15em", color: "#aaa", padding: w <= 480 ? "12px 24px" : "15px 34px",
+              textTransform: "uppercase", transition: "border-color 0.2s, background 0.2s, color 0.2s",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.background = `${GOLD}0d`; e.currentTarget.style.color = GOLD; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = `${GOLD}44`; e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#aaa"; }}
+            >Sublimation</button>
           </div>
 
-          {/* Stats */}
           <div style={{ display: "flex", gap: w <= 480 ? 20 : 44, flexWrap: "wrap", marginTop: w <= 480 ? 44 : 68, paddingTop: w <= 480 ? 24 : 36, borderTop: `1px solid ${GOLD}20`, justifyContent: "center" }}>
             {STATS.map(s => (
               <div key={s.label} style={{ textAlign: "center" }}>
@@ -334,24 +480,21 @@ function AboutPage() {
   return (
     <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(160deg, ${DARK_WARM} 0%, ${DARK} 100%)`, position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 25% 40%, ${GOLD}07 0%, transparent 60%)`, pointerEvents: "none" }} />
-
       <div ref={ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(28px)", transition: "all 0.8s cubic-bezier(0.22,1,0.36,1)" }}>
         <SectionLabel>Who We Are</SectionLabel>
         <Heading size={44}>Crafting Excellence<br /><span style={{ color: GOLD }}>Since 2003</span></Heading>
         <GoldDivider />
-
         <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, lineHeight: 1.85, color: "#999", maxWidth: 780, margin: "0 auto 24px" }}>
           RR Promotional Bag Manufacturers (T/A RML) has been a cornerstone of quality bag manufacturing for over 20 years.
-          Based at our state-of-the-art facility in <strong style={{ color: "#ddd" }}>Mount Edgecombe, KZN</strong>, we serve corporate clients, schools, and promotional agencies across South Africa.
+          Based at our state-of-the-art facility in <strong style={{ color: "#ddd" }}>{LOCATION}</strong>, we serve corporate clients, schools, and promotional agencies across South Africa.
         </p>
         <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, lineHeight: 1.85, color: "#999", maxWidth: 780, margin: "0 auto 40px" }}>
-          Our <strong style={{ color: "#ddd" }}>70-person production team</strong> works alongside a specialized design studio to bring every specification to life — whether from a physical sample or a technical drawing. All materials are tested to <strong style={{ color: "#ddd" }}>SABS standards</strong>.
+          Our <strong style={{ color: "#ddd" }}>70-person production team</strong> works alongside a specialized design studio to bring every specification to life — whether from a physical sample or a technical drawing. All materials and components, including zips and fabric, are tested to <strong style={{ color: "#ddd" }}>SABS standards</strong>.
         </p>
 
-        {/* Feature bullets */}
         <div style={{ display: "grid", gridTemplateColumns: w <= 600 ? "1fr" : "1fr 1fr", gap: 16, maxWidth: 700, margin: "0 auto 48px", textAlign: "left" }}>
           {[
-            "In-house screen printing & embroidery facility",
+            "In-house screen printing, embroidery & sublimation",
             "Custom manufacturing from drawings or samples",
             "Committed to skills development & social upliftment",
             "Cost-effective without compromising quality",
@@ -363,14 +506,16 @@ function AboutPage() {
           ))}
         </div>
 
-        {/* Mission card */}
         <div style={{ background: DARK3, border: `1px solid ${GOLD}33`, borderRadius: 4, padding: w <= 480 ? 28 : 48, position: "relative", maxWidth: 680, margin: "0 auto" }}>
           <div style={{ position: "absolute", top: -1, left: 60, right: 60, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
           <Crown size={w <= 480 ? 30 : 44} />
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 16 : 19, lineHeight: 1.75, color: "#ccc", fontStyle: "italic", margin: "20px 0 0" }}>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 15 : 18, lineHeight: 1.75, color: "#ccc", fontStyle: "italic", margin: "20px 0 12px" }}>
             "Our mission is to provide customers with the highest possible quality in the most cost-effective manner."
           </p>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginTop: 20, marginBottom: 0 }}>Our Mission</p>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, lineHeight: 1.7, color: `${GOLD_LIGHT}cc`, fontStyle: "italic", margin: "0 0 16px" }}>
+            "Setting Your Promotional Ideas Free!"
+          </p>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginTop: 4, marginBottom: 0 }}>Our Mission</p>
         </div>
       </div>
     </section>
@@ -402,18 +547,8 @@ function ProductsPage({ setActivePage }) {
                 onMouseEnter={() => setHov(true)}
                 onMouseLeave={() => setHov(false)}
                 onClick={() => { setActivePage("Contact"); window.scrollTo({ top: 0 }); }}
-                style={{
-                  background: hov ? DARK3 : "#100f0c",
-                  border: `1px solid ${hov ? GOLD + "70" : GOLD + "20"}`,
-                  borderRadius: 6, cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  opacity: inView ? 1 : 0,
-                  transform: inView ? "none" : "translateY(22px)",
-                  transitionDelay: `${i * 55}ms`,
-                  overflow: "hidden",
-                }}
+                style={{ background: hov ? DARK3 : "#100f0c", border: `1px solid ${hov ? GOLD + "70" : GOLD + "20"}`, borderRadius: 6, cursor: "pointer", transition: "all 0.3s ease", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(22px)", transitionDelay: `${i * 55}ms`, overflow: "hidden" }}
               >
-                {/* Image */}
                 <div style={{ position: "relative", height: w <= 480 ? 140 : 170, background: "#f5f5f5", overflow: "hidden" }}>
                   <img src={p.image} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   <div style={{ position: "absolute", top: 10, left: 10, background: `${GOLD}EE`, color: DARK, padding: "4px 10px", borderRadius: 3, fontSize: w <= 480 ? 8 : 9, fontWeight: 800, fontFamily: "'Montserrat', sans-serif", letterSpacing: "0.06em" }}>
@@ -435,11 +570,89 @@ function ProductsPage({ setActivePage }) {
   );
 }
 
+// ── SUBLIMATION PAGE (NEW) ──────────────────────────────────────────────────
+function SublimationPage({ setActivePage }) {
+  const [ref, inView] = useInView(0.05);
+  const w = useWindowWidth();
+
+  return (
+    <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(165deg, ${DARK} 0%, #1a1508 60%, ${DARK_WARM} 100%)`, position: "relative", overflow: "hidden" }}>
+      {/* Decorative background texture */}
+      <div style={{ position: "absolute", inset: 0, opacity: 0.02, backgroundImage: `radial-gradient(${GOLD} 1px, transparent 1px)`, backgroundSize: "28px 28px", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 70% 30%, ${GOLD}09 0%, transparent 55%)`, pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ textAlign: "center", marginBottom: w <= 480 ? 40 : 64 }}>
+          <SectionLabel>In-House Branding Suite</SectionLabel>
+          <Heading size={44}>Sublimation &amp; Workwear</Heading>
+          <GoldDivider />
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, color: "#888", maxWidth: 620, margin: "0 auto 24px" }}>
+            Beyond bags — we offer a complete in-house branding solution. From vibrant sublimated tracksuits to corporate golf shirts, everything is produced under one roof alongside our embroidery and silk screen printing services.
+          </p>
+          {/* Branding methods strip */}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 20 }}>
+            {["Sublimation Printing", "Silk Screen Printing", "Embroidery"].map(method => (
+              <span key={method} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 9 : 10, fontWeight: 700, letterSpacing: "0.15em", color: DARK, background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, padding: "6px 14px", borderRadius: 2, textTransform: "uppercase" }}>{method}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Product grid */}
+        <div ref={ref} style={{ display: "grid", gridTemplateColumns: w <= 480 ? "1fr" : w <= 768 ? "repeat(2,1fr)" : "repeat(3,1fr)", gap: w <= 480 ? 16 : 24, marginBottom: w <= 480 ? 48 : 72 }}>
+          {SUBLIMATION_ITEMS.map((item, i) => {
+            const [hov, setHov] = useState(false);
+            return (
+              <div key={item.name}
+                onMouseEnter={() => setHov(true)}
+                onMouseLeave={() => setHov(false)}
+                onClick={() => { setActivePage("Contact"); window.scrollTo({ top: 0 }); }}
+                style={{ background: hov ? DARK3 : "#100f0c", border: `1px solid ${hov ? GOLD + "70" : GOLD + "20"}`, borderRadius: 6, cursor: "pointer", transition: "all 0.3s ease", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(22px)", transitionDelay: `${i * 60}ms`, overflow: "hidden" }}
+              >
+                <div style={{ position: "relative", height: w <= 480 ? 140 : 170, background: "#f5f5f5", overflow: "hidden" }}>
+                  <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ position: "absolute", top: 10, left: 10, background: `${GOLD}EE`, color: DARK, padding: "4px 10px", borderRadius: 3, fontSize: w <= 480 ? 8 : 9, fontWeight: 800, fontFamily: "'Montserrat', sans-serif", letterSpacing: "0.06em" }}>
+                    ADD YOUR LOGO
+                  </div>
+                </div>
+                <div style={{ padding: w <= 480 ? 16 : 22, textAlign: "center" }}>
+                  <div style={{ fontSize: w <= 480 ? 24 : 30, marginBottom: 10 }}>{item.icon}</div>
+                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 17 : 19, fontWeight: 700, color: "#fff", margin: "0 0 8px" }}>{item.name}</h3>
+                  <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#888", lineHeight: 1.6, margin: "0 0 14px" }}>{item.desc}</p>
+                  <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", color: GOLD, textTransform: "uppercase" }}>Get a Quote →</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CTA banner */}
+        <div style={{ background: `linear-gradient(135deg, #1e1a08, ${DARK3})`, border: `1px solid ${GOLD}30`, borderRadius: 6, padding: w <= 480 ? "28px 20px" : "44px 56px", textAlign: "center", position: "relative" }}>
+          <div style={{ position: "absolute", top: -1, left: 60, right: 60, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
+          <Crown size={w <= 480 ? 28 : 38} />
+          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 22 : 28, color: "#fff", margin: "16px 0 10px" }}>One Supplier. Complete Branding.</h3>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, color: "#888", maxWidth: 540, margin: "0 auto 24px", lineHeight: 1.7 }}>
+            Order your bags and your branded clothing together. One quote, one supplier, one delivery.
+          </p>
+          <button onClick={() => { setActivePage("Contact"); window.scrollTo({ top: 0 }); }} style={{
+            background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`,
+            border: "none", borderRadius: 2, cursor: "pointer",
+            fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, fontWeight: 700,
+            letterSpacing: "0.15em", color: DARK, padding: w <= 480 ? "12px 24px" : "14px 32px",
+            textTransform: "uppercase", transition: "transform 0.2s",
+          }}
+            onMouseEnter={e => e.target.style.transform = "translateY(-2px)"}
+            onMouseLeave={e => e.target.style.transform = "none"}
+          >Request a Quote</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ── GALLERY PAGE ────────────────────────────────────────────────────────────
 function GalleryPage() {
   const [ref, inView] = useInView();
   const w = useWindowWidth();
-  const slots = [1, 2, 3, 4, 5, 6];
 
   return (
     <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(160deg, ${DARK_WARM} 0%, ${DARK} 100%)` }}>
@@ -450,7 +663,6 @@ function GalleryPage() {
         <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 13 : 15, color: "#888", maxWidth: 560, margin: "0 auto 36px" }}>
           Browse our recent manufacturing projects and custom bag solutions.
         </p>
-
         <div ref={ref} style={{
           display: "grid",
           gridTemplateColumns: w <= 480 ? "1fr" : w <= 768 ? "repeat(2,1fr)" : "repeat(3,1fr)",
@@ -459,31 +671,44 @@ function GalleryPage() {
           transform: inView ? "none" : "translateY(28px)",
           transition: "all 0.8s ease",
         }}>
-          {slots.map(i => (
+          {GALLERY_ITEMS.map((item, i) => (
             <div key={i} style={{
-              height: w <= 480 ? 200 : 260,
-              background: `${GOLD}07`,
+              height: w <= 480 ? 220 : 270,
               borderRadius: 6,
               border: `1px solid ${GOLD}20`,
               overflow: "hidden",
               position: "relative",
-              transition: "transform 0.3s, border-color 0.3s",
               cursor: "pointer",
+              transition: "transform 0.3s, border-color 0.3s",
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.025)"; e.currentTarget.style.borderColor = GOLD; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.borderColor = `${GOLD}20`; }}
             >
-              <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${GOLD}0e, transparent)`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ fontSize: w <= 480 ? 36 : 48, marginBottom: 12 }}>👜</div>
-                <p style={{ color: GOLD, fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 14, fontWeight: 600, margin: 0 }}>Project {i}</p>
-                <p style={{ color: "#666", fontSize: w <= 480 ? 10 : 12, marginTop: 6 }}>Replace with actual photo</p>
+              <img
+                src={item.image}
+                alt={item.label}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+              {/* Label overlay on hover */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to top, rgba(10,9,6,0.85) 0%, transparent 55%)",
+                display: "flex", alignItems: "flex-end", padding: "16px 18px",
+              }}>
+                <p style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: w <= 480 ? 11 : 13,
+                  fontWeight: 600,
+                  color: "#fff",
+                  letterSpacing: "0.05em",
+                  margin: 0,
+                }}>{item.label}</p>
               </div>
             </div>
           ))}
         </div>
-
         <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#555", marginTop: 32, fontStyle: "italic" }}>
-          * Add real product photos here once provided by the client
+          * Replace with actual client project photos once provided
         </p>
       </div>
     </section>
@@ -494,7 +719,6 @@ function GalleryPage() {
 function ValuesPage() {
   const [ref, inView] = useInView(0.1);
   const w = useWindowWidth();
-
   const values = [
     { icon: "🤝", title: "Skills Development", desc: "We invest in our people. Every team member is trained and upskilled, building long-term careers within our production facility." },
     { icon: "🌍", title: "Community First", desc: "We are committed to promoting staff from previously disadvantaged communities, creating meaningful employment and opportunity." },
@@ -505,7 +729,6 @@ function ValuesPage() {
   return (
     <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(170deg, ${DARK3} 0%, ${DARK} 100%)`, position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, opacity: 0.022, backgroundImage: `radial-gradient(${GOLD} 1px, transparent 1px)`, backgroundSize: "30px 30px", pointerEvents: "none" }} />
-
       <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: w <= 480 ? 40 : 60 }}>
           <SectionLabel>What Drives Us</SectionLabel>
@@ -515,24 +738,11 @@ function ValuesPage() {
             Manufacturing excellence is only part of who we are. We believe business should uplift people and communities.
           </p>
         </div>
-
         <div ref={ref} style={{ display: "grid", gridTemplateColumns: w <= 640 ? "1fr" : "repeat(2,1fr)", gap: w <= 480 ? 16 : 24 }}>
           {values.map((v, i) => (
-            <div key={v.title} style={{
-              background: DARK2,
-              border: `1px solid ${GOLD}20`,
-              borderRadius: 6,
-              padding: w <= 480 ? 22 : 34,
-              display: "flex", gap: 20, alignItems: "flex-start",
-              opacity: inView ? 1 : 0,
-              transform: inView ? "none" : "translateY(22px)",
-              transition: `all 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`,
-              position: "relative", overflow: "hidden",
-            }}>
+            <div key={v.title} style={{ background: DARK2, border: `1px solid ${GOLD}20`, borderRadius: 6, padding: w <= 480 ? 22 : 34, display: "flex", gap: 20, alignItems: "flex-start", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(22px)", transition: `all 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", left: 0, top: 16, bottom: 16, width: 3, background: `linear-gradient(to bottom, transparent, ${GOLD}, transparent)`, borderRadius: 2 }} />
-              <div style={{ fontSize: w <= 480 ? 26 : 34, flexShrink: 0, width: w <= 480 ? 46 : 56, height: w <= 480 ? 46 : 56, background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                {v.icon}
-              </div>
+              <div style={{ fontSize: w <= 480 ? 26 : 34, flexShrink: 0, width: w <= 480 ? 46 : 56, height: w <= 480 ? 46 : 56, background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>{v.icon}</div>
               <div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 16 : 19, fontWeight: 700, color: "#fff", margin: "0 0 8px" }}>{v.title}</h3>
                 <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 13, color: "#888", lineHeight: 1.7, margin: 0 }}>{v.desc}</p>
@@ -572,7 +782,6 @@ function ContactPage() {
         if (k === "logoFile" && v) fd.append("logo", v);
         else if (k !== "logoFile" && k !== "logoFileName") fd.append(k, v);
       });
-      // Replace YOUR_FORM_ID with actual Formspree ID once client provides it
       const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", { method: "POST", body: fd, headers: { Accept: "application/json" } });
       if (res.ok) setSubmitted(true);
       else throw new Error();
@@ -580,23 +789,12 @@ function ContactPage() {
     finally { setLoading(false); }
   };
 
-  const inp = {
-    width: "100%", background: "#0c0b08", border: `1px solid ${GOLD}30`,
-    borderRadius: 2, padding: w <= 480 ? "10px 12px" : "13px 15px", color: "#fff",
-    fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 14,
-    outline: "none", boxSizing: "border-box", transition: "border-color 0.2s",
-  };
-  const lbl = {
-    fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, fontWeight: 700,
-    letterSpacing: "0.15em", color: "#777", textTransform: "uppercase",
-    display: "block", marginBottom: 7, textAlign: "left",
-  };
+  const inp = { width: "100%", background: "#0c0b08", border: `1px solid ${GOLD}30`, borderRadius: 2, padding: w <= 480 ? "10px 12px" : "13px 15px", color: "#fff", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 12 : 14, outline: "none", boxSizing: "border-box", transition: "border-color 0.2s" };
+  const lbl = { fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, fontWeight: 700, letterSpacing: "0.15em", color: "#777", textTransform: "uppercase", display: "block", marginBottom: 7, textAlign: "left" };
 
   return (
     <section style={{ minHeight: "100vh", padding: w <= 480 ? "90px 4% 60px" : "110px 5% 80px", background: `linear-gradient(160deg, ${DARK_WARM} 0%, ${DARK} 100%)`, position: "relative" }}>
       <div ref={ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center" }}>
-
-        {/* Header */}
         <div style={{ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(24px)", transition: "all 0.7s ease" }}>
           <SectionLabel>Get In Touch</SectionLabel>
           <Heading size={44}>Request a <span style={{ color: GOLD }}>Custom Quote</span></Heading>
@@ -606,31 +804,27 @@ function ContactPage() {
           </p>
         </div>
 
-        {/* Contact details row — no awkward gaps */}
+        {/* Contact details */}
         <div style={{ display: "flex", flexDirection: w <= 640 ? "column" : "row", gap: 16, justifyContent: "center", marginBottom: 24, opacity: inView ? 1 : 0, transition: "all 0.7s ease 0.1s" }}>
           {[
             { icon: "📞", label: "Phone", val: "031 537 3788 / 083 443 6915", href: "tel:0315373788" },
-            { icon: "✉️", label: "Email", val: "leighshe.rml@gmail.com", href: "mailto:leighshe.rml@gmail.com" },
-            { icon: "📍", label: "Location", val: "Mount Edgecombe, KZN", href: null },
+            { icon: "✉️", label: "Email", val: EMAIL, href: `mailto:${EMAIL}` },
+            { icon: "📍", label: "Location", val: LOCATION, href: null },
           ].map(c => (
             <div key={c.label} style={{ display: "flex", gap: 12, alignItems: "center", background: DARK3, border: `1px solid ${GOLD}18`, borderRadius: 4, padding: "14px 18px", flex: 1 }}>
               <div style={{ width: 40, height: 40, borderRadius: 2, background: `${GOLD}14`, border: `1px solid ${GOLD}28`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{c.icon}</div>
               <div style={{ textAlign: "left" }}>
                 <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", margin: "0 0 3px" }}>{c.label}</p>
-                {c.href
-                  ? <a href={c.href} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#ccc", textDecoration: "none" }}>{c.val}</a>
-                  : <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#ccc", margin: 0 }}>{c.val}</p>
-                }
+                {c.href ? <a href={c.href} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#ccc", textDecoration: "none" }}>{c.val}</a>
+                  : <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#ccc", margin: 0 }}>{c.val}</p>}
               </div>
             </div>
           ))}
         </div>
 
-        {/* WhatsApp CTA */}
+        {/* WhatsApp */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 36, opacity: inView ? 1 : 0, transition: "all 0.7s ease 0.15s" }}>
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27d%20like%20a%20quote%20for%20custom%20bags.`}
-            target="_blank" rel="noopener noreferrer"
+          <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27d%20like%20a%20quote%20for%20custom%20bags.`} target="_blank" rel="noopener noreferrer"
             style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "#128C7E1a", border: "1px solid #128C7E55", borderRadius: 2, padding: "11px 24px", textDecoration: "none", transition: "background 0.2s, border-color 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#128C7E2e"; e.currentTarget.style.borderColor = "#25D366"; }}
             onMouseLeave={e => { e.currentTarget.style.background = "#128C7E1a"; e.currentTarget.style.borderColor = "#128C7E55"; }}
@@ -646,7 +840,7 @@ function ContactPage() {
           </a>
         </div>
 
-        {/* Quote form card */}
+        {/* Quote form */}
         <div style={{ background: DARK3, border: `1px solid ${GOLD}30`, borderRadius: 6, padding: w <= 480 ? 22 : 44, position: "relative", textAlign: "left", opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(24px)", transition: "all 0.7s ease 0.2s" }}>
           <div style={{ position: "absolute", top: -1, left: 48, right: 48, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
 
@@ -665,8 +859,6 @@ function ContactPage() {
           ) : (
             <>
               {error && <div style={{ background: "#ff000014", border: "1px solid #ff0000", borderRadius: 4, padding: "10px", marginBottom: 16, color: "#ff6666", fontSize: 13, textAlign: "center" }}>{error}</div>}
-
-              {/* Step indicators */}
               <div style={{ display: "flex", gap: 8, marginBottom: w <= 480 ? 22 : 30 }}>
                 {[1, 2, 3].map(s => (
                   <div key={s} style={{ display: "flex", alignItems: "center", gap: 8, flex: 1 }}>
@@ -676,7 +868,6 @@ function ContactPage() {
                 ))}
               </div>
 
-              {/* Step 1 */}
               {step === 1 && (
                 <div style={{ display: "flex", flexDirection: "column", gap: w <= 480 ? 14 : 18 }}>
                   <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Your Details</p>
@@ -692,13 +883,18 @@ function ContactPage() {
                 </div>
               )}
 
-              {/* Step 2 */}
               {step === 2 && (
                 <div style={{ display: "flex", flexDirection: "column", gap: w <= 480 ? 14 : 18 }}>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Bag Specifications</p>
-                  <div><label style={lbl}>Bag Type *</label><select value={form.bagType} onChange={set("bagType")} style={{ ...inp, appearance: "none" }}><option value="">Select a category...</option>{BAG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}</select></div>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Order Specifications</p>
+                  <div><label style={lbl}>Product Type *</label>
+                    <select value={form.bagType} onChange={set("bagType")} style={{ ...inp, appearance: "none" }}>
+                      <option value="">Select a category...</option>
+                      <optgroup label="── Bags ──">{BAG_TYPES.map(t => <option key={t} value={t}>{t}</option>)}</optgroup>
+                      <optgroup label="── Sublimation & Workwear ──">{SUBLIMATION_ITEMS.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}</optgroup>
+                    </select>
+                  </div>
                   <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
-                    <div><label style={lbl}>Dimensions (H×W×D cm)</label><input value={form.dimensions} onChange={set("dimensions")} placeholder="e.g. 40×30×15" style={inp} /></div>
+                    <div><label style={lbl}>Dimensions (H×W×D cm)</label><input value={form.dimensions} onChange={set("dimensions")} placeholder="e.g. 40×30×15 or N/A" style={inp} /></div>
                     <div><label style={lbl}>Quantity *</label><input value={form.quantity} onChange={set("quantity")} type="number" placeholder="e.g. 500" style={inp} /></div>
                   </div>
                   <div>
@@ -707,7 +903,6 @@ function ContactPage() {
                       {BRANDING.map(b => (<button key={b} onClick={() => setForm(f => ({ ...f, branding: b }))} style={{ background: form.branding === b ? `${GOLD}20` : "transparent", border: `1px solid ${form.branding === b ? GOLD : GOLD + "28"}`, borderRadius: 2, cursor: "pointer", padding: "7px 14px", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 12, fontWeight: 600, color: form.branding === b ? GOLD : "#666" }}>{b}</button>))}
                     </div>
                   </div>
-                  {/* Logo upload */}
                   <div>
                     <label style={lbl}>Upload Logo / Artwork</label>
                     <div onClick={() => fileInputRef.current?.click()} style={{ width: "100%", boxSizing: "border-box", background: "#0c0b08", border: `1px dashed ${form.logoFileName ? GOLD : GOLD + "38"}`, borderRadius: 2, padding: "16px", cursor: "pointer", textAlign: "center", transition: "border-color 0.2s" }}
@@ -733,14 +928,13 @@ function ContactPage() {
                 </div>
               )}
 
-              {/* Step 3 */}
               {step === 3 && (
                 <div style={{ display: "flex", flexDirection: "column", gap: w <= 480 ? 14 : 18 }}>
                   <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 18 : 20, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>Additional Notes</p>
                   <div><label style={lbl}>Special Requirements / Notes</label><textarea value={form.notes} onChange={set("notes")} rows={4} placeholder="Describe any specific requirements, materials, colors..." style={{ ...inp, resize: "vertical" }} /></div>
                   <div style={{ background: "#0a0906", border: `1px solid ${GOLD}18`, borderRadius: 2, padding: 18 }}>
                     <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.2em", color: GOLD, marginBottom: 12, textAlign: "center" }}>QUOTE SUMMARY</p>
-                    {[["Contact", form.name + (form.company ? ` · ${form.company}` : "")], ["Bag Type", form.bagType], ["Quantity", form.quantity], ["Branding", form.branding || "Not specified"], ["Logo", form.logoFileName || "Not uploaded"]].map(([k, v]) => (
+                    {[["Contact", form.name + (form.company ? ` · ${form.company}` : "")], ["Product", form.bagType], ["Quantity", form.quantity], ["Branding", form.branding || "Not specified"], ["Logo", form.logoFileName || "Not uploaded"]].map(([k, v]) => (
                       <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                         <span style={{ fontSize: 12, color: "#666" }}>{k}</span>
                         <span style={{ fontSize: 12, color: "#ccc", fontWeight: 600, maxWidth: "60%", textAlign: "right", wordBreak: "break-word" }}>{v}</span>
@@ -769,9 +963,8 @@ function Footer({ setActivePage }) {
   const isMobile = w <= 768;
 
   return (
-     <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
+    <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        {/* Scripture block */}
         <div style={{ background: "linear-gradient(135deg, #110e00, #0a0806)", border: `1px solid ${GOLD}28`, borderRadius: 6, padding: w <= 480 ? "24px 18px" : "44px 52px", marginBottom: w <= 480 ? 40 : 56, textAlign: "center", position: "relative" }}>
           <div style={{ position: "absolute", top: -1, left: 48, right: 48, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
           <Crown size={w <= 480 ? 24 : 34} />
@@ -781,68 +974,52 @@ function Footer({ setActivePage }) {
           <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, letterSpacing: "0.2em", color: GOLD, marginTop: 16, textTransform: "uppercase" }}>— 1 Chronicles 4:10 (NKJV)</p>
         </div>
 
-        {/* Footer grid */}
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", gap: isMobile ? 28 : 44, marginBottom: isMobile ? 28 : 44, textAlign: isMobile ? "center" : "left" }}>
-          {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, justifyContent: isMobile ? "center" : "flex-start" }}>
               <img src={logo} alt="RR Logo" style={{ height: w <= 480 ? 28 : 34, width: "auto", objectFit: "contain", borderRadius: 4 }} />
               <div>
                 <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 15, fontWeight: 800, color: "#fff" }}>RR PROMOTIONAL</div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: "0.3em", color: GOLD, fontWeight: 700 }}>BAG MANUFACTURERS</div>
+                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: "0.3em", color: BAG_MFR_COLOR, fontWeight: 700 }}>BAG MANUFACTURERS</div>
               </div>
             </div>
             <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", lineHeight: 1.7, maxWidth: isMobile ? "100%" : 270 }}>
-              Premium custom bag manufacturers since 2003. 70 staff · SABS-tested · Mount Edgecombe, KZN.
+              Premium custom bag manufacturers since 2003. 70 staff · SABS-tested · {LOCATION_SHORT}.
             </p>
           </div>
-
-          {/* Products links */}
           <div>
             <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>Products</p>
-            {["Conference Bags", "Cooler Bags", "School Bags", "Promotional Bags", "Shopping Bags"].map(p => (
-              <p key={p} onClick={() => { setActivePage("Products"); window.scrollTo({ top: 0 }); }} style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, cursor: "pointer", transition: "color 0.2s" }}
+            {["Conference Bags", "Cooler Bags", "School Bags", "Promotional Bags", "Sublimation"].map(p => (
+              <p key={p} onClick={() => { setActivePage(p === "Sublimation" ? "Sublimation" : "Products"); window.scrollTo({ top: 0 }); }}
+                style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, cursor: "pointer", transition: "color 0.2s" }}
                 onMouseEnter={e => e.target.style.color = GOLD}
                 onMouseLeave={e => e.target.style.color = "#555"}
               >{p}</p>
             ))}
           </div>
-
-          {/* Contact */}
           <div>
             <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>Contact</p>
             <a href="tel:0315373788" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>031 537 3788</a>
             <a href="tel:0834436915" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>083 443 6915</a>
-            <a href="mailto:leighshe.rml@gmail.com" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>leighshe.rml@gmail.com</a>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 10 }}>Mount Edgecombe, KZN</p>
+            <a href={`mailto:${EMAIL}`} style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>{EMAIL}</a>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 10 }}>{LOCATION}</p>
             <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#25D366", textDecoration: "none" }}>
               <span>💬</span> WhatsApp Us
             </a>
           </div>
         </div>
 
-        {/* Bottom bar with Developer Credit */}
         <div style={{ borderTop: `1px solid ${GOLD}12`, paddingTop: 18, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10, flexDirection: isMobile ? "column" : "row", textAlign: "center", alignItems: "center" }}>
           <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#3a3830", margin: 0 }}>
             © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML). All rights reserved.
           </p>
           <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#3a3830", margin: 0 }}>
-            Developed by{' '}
-            <a 
-              href="https://afribizconnect.co.za/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{ 
-                color: GOLD, 
-                textDecoration: "none",
-                transition: "opacity 0.2s",
-                fontWeight: 500
-              }}
+            Developed by{" "}
+            <a href="https://afribizconnect.co.za/" target="_blank" rel="noopener noreferrer"
+              style={{ color: GOLD, textDecoration: "none", fontWeight: 500, transition: "opacity 0.2s" }}
               onMouseEnter={e => e.target.style.opacity = "0.8"}
               onMouseLeave={e => e.target.style.opacity = "1"}
-            >
-              Afribiz
-            </a>
+            >Afribiz</a>
           </p>
         </div>
       </div>
@@ -850,7 +1027,7 @@ function Footer({ setActivePage }) {
   );
 }
 
-// ── Scroll To Top ────────────────────────────────────────────────────────────
+// ── Scroll To Top ─────────────────────────────────────────────────────────
 function ScrollToTop() {
   const [vis, setVis] = useState(false);
   const [hov, setHov] = useState(false);
@@ -871,22 +1048,21 @@ function ScrollToTop() {
   );
 }
 
-// ── APP ROOT ─────────────────────────────────────────────────────────────────
+// ── APP ROOT ──────────────────────────────────────────────────────────────
 function App() {
   const [activePage, setActivePage] = useState("Home");
-
   const renderPage = () => {
     switch (activePage) {
-      case "Home":     return <HomePage setActivePage={setActivePage} />;
-      case "About":    return <AboutPage />;
-      case "Products": return <ProductsPage setActivePage={setActivePage} />;
-      case "Gallery":  return <GalleryPage />;
-      case "Values":   return <ValuesPage />;
-      case "Contact":  return <ContactPage />;
-      default:         return <HomePage setActivePage={setActivePage} />;
+      case "Home":         return <HomePage setActivePage={setActivePage} />;
+      case "About":        return <AboutPage />;
+      case "Products":     return <ProductsPage setActivePage={setActivePage} />;
+      case "Sublimation":  return <SublimationPage setActivePage={setActivePage} />;
+      case "Gallery":      return <GalleryPage />;
+      case "Values":       return <ValuesPage />;
+      case "Contact":      return <ContactPage />;
+      default:             return <HomePage setActivePage={setActivePage} />;
     }
   };
-
   return (
     <div style={{ background: DARK, minHeight: "100vh" }}>
       <Nav activePage={activePage} setActivePage={setActivePage} />
