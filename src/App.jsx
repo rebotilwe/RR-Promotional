@@ -418,9 +418,16 @@ function HomePage({ setActivePage }) {
           <div style={{ maxWidth: 760, margin: "0 auto" }}>
             <Heading size={hSize}>
               Premium Custom<br />
-              <span style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                Bag Manufacturers
-              </span>
+             <span style={{ 
+  // We add a very bright center point to simulate a "gold shine"
+  background: `linear-gradient(135deg, #F5D742 0%, #FFF2A8 50%, #F5D742 100%)`, 
+  WebkitBackgroundClip: "text", 
+  WebkitTextFillColor: "transparent", 
+  backgroundClip: "text",
+  fontWeight: 900
+}}>
+  Bag Manufacturers
+</span>
             </Heading>
           </div>
 
