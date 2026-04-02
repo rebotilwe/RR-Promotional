@@ -12,6 +12,7 @@ import handbag from './assets/products/hand.avif';
 import business from './assets/products/business.jpeg';
 import coolBag from './assets/products/coolBag.jpeg';
 import girly from './assets/products/girly.jpeg';
+import gym from './assets/products/gym.jpeg';
 // import togBag from './assets/products/tog-bag.jpg';
 // import misc from './assets/products/misc.jpg';
 
@@ -24,7 +25,7 @@ import workers from './assets/sublimation/workers.png';
 
 const GOLD = "#C9A84C";
 const GOLD_LIGHT = "#E8C96A";
-const BAG_MFR_COLOR = "#F0D080"; // Much brighter than GOLD — visible on dark bg
+const BAG_MFR_COLOR = "#F5D742"; // Much brighter than GOLD — visible on dark bg
 const DARK = "#0f0e0a";
 const DARK2 = "#161510";
 const DARK3 = "#1e1c14";
@@ -85,7 +86,7 @@ const PRODUCTS = [
     name: "Tog Bags",
     icon: "🗃️",
     desc: "Versatile tog bags for corporate gifting and sports.",
-    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=400&fit=crop&auto=format",
+    image: gym,
   },
   {
     name: "Miscellaneous",
@@ -303,7 +304,16 @@ function Nav({ activePage, setActivePage }) {
           <div>
             <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 17, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", lineHeight: 1.2 }}>RR PROMOTIONAL</div>
             {/* ── BRIGHTER "BAG MANUFACTURERS" text ── */}
-            <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 7 : 9, letterSpacing: w <= 480 ? "0.2em" : "0.35em", color: BAG_MFR_COLOR, fontWeight: 700 }}>BAG MANUFACTURERS</div>
+          {/* Find this div in the Nav component (around line 200-210) */}
+<div style={{ 
+  fontFamily: "'Montserrat', sans-serif", 
+  fontSize: w <= 480 ? 7 : 9, 
+  letterSpacing: w <= 480 ? "0.2em" : "0.35em", 
+  color: BAG_MFR_COLOR, 
+  fontWeight: 700,
+  textShadow: "0 0 4px rgba(245, 215, 66, 0.5)", // Add this line for glow effect
+  opacity: 1 // Ensure full opacity
+}}>BAG MANUFACTURERS</div>
           </div>
         </div>
 
@@ -967,67 +977,128 @@ function Footer({ setActivePage }) {
   const isMobile = w <= 768;
 
   return (
-    <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ background: "linear-gradient(135deg, #110e00, #0a0806)", border: `1px solid ${GOLD}28`, borderRadius: 6, padding: w <= 480 ? "24px 18px" : "44px 52px", marginBottom: w <= 480 ? 40 : 56, textAlign: "center", position: "relative" }}>
-          <div style={{ position: "absolute", top: -1, left: 48, right: 48, height: 2, background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` }} />
-          <Crown size={w <= 480 ? 24 : 34} />
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : w <= 768 ? 16 : 18, lineHeight: 1.75, color: "#bbb", fontStyle: "italic", maxWidth: 700, margin: "18px auto 0" }}>
-            "And Jabez called on the God of Israel saying, 'Oh, that You would bless me indeed, and enlarge my territory, that Your hand would be with me, and that You would keep me from evil, that I may not cause pain!' So God granted him what he requested."
-          </p>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, letterSpacing: "0.2em", color: GOLD, marginTop: 16, textTransform: "uppercase" }}>— 1 Chronicles 4:10 (NKJV)</p>
-        </div>
+   <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
+  <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+    {/* Scripture Section - Prayer of Jabez */}
+    <div style={{ 
+      background: "linear-gradient(135deg, #110e00, #0a0806)", 
+      border: `1px solid ${GOLD}28`, 
+      borderRadius: 6, 
+      padding: w <= 480 ? "24px 18px" : "44px 52px", 
+      marginBottom: w <= 480 ? 40 : 56, 
+      textAlign: "center", 
+      position: "relative" 
+    }}>
+      <div style={{ 
+        position: "absolute", top: -1, left: 48, right: 48, height: 2, 
+        background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` 
+      }} />
+      <Crown size={w <= 480 ? 24 : 34} />
+      <p style={{ 
+        fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : w <= 768 ? 16 : 18, lineHeight: 1.75, 
+        color: "#bbb", fontStyle: "italic", maxWidth: 700, margin: "18px auto 0" 
+      }}>
+        "And Jabez called on the God of Israel saying, 'Oh, that You would bless me indeed, and enlarge my territory, that Your hand would be with me, and that You would keep me from evil, that I may not cause pain!' So God granted him what he requested."
+      </p>
+      <p style={{ 
+        fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, letterSpacing: "0.2em", 
+        color: GOLD, marginTop: 16, textTransform: "uppercase" 
+      }}>
+        — 1 Chronicles 4:10 (NKJV)
+      </p>
+    </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", gap: isMobile ? 28 : 44, marginBottom: isMobile ? 28 : 44, textAlign: isMobile ? "center" : "left" }}>
+    {/* Footer Grid */}
+    <div style={{ 
+      display: "grid", 
+      gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", 
+      gap: isMobile ? 28 : 44, 
+      marginBottom: isMobile ? 28 : 44, 
+      textAlign: isMobile ? "center" : "left" 
+    }}>
+      {/* Brand & Address */}
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, justifyContent: isMobile ? "center" : "flex-start" }}>
+          <img src={logo} alt="RR Logo" style={{ height: w <= 480 ? 32 : 40, width: "auto", objectFit: "contain", borderRadius: 4 }} />
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, justifyContent: isMobile ? "center" : "flex-start" }}>
-              <img src={logo} alt="RR Logo" style={{ height: w <= 480 ? 28 : 34, width: "auto", objectFit: "contain", borderRadius: 4 }} />
-              <div>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 15, fontWeight: 800, color: "#fff" }}>RR PROMOTIONAL</div>
-                <div style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 8, letterSpacing: "0.3em", color: BAG_MFR_COLOR, fontWeight: 700 }}>BAG MANUFACTURERS</div>
-              </div>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : 16, fontWeight: 800, color: "#fff" }}>
+              RR PROMOTIONAL
             </div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", lineHeight: 1.7, maxWidth: isMobile ? "100%" : 270 }}>
-              Premium custom bag manufacturers since 2003. 70 staff · SABS-tested · {LOCATION_SHORT}.
-            </p>
-          </div>
-          <div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>Products</p>
-            {["Conference Bags", "Cooler Bags", "School Bags", "Promotional Bags", "Sublimation"].map(p => (
-              <p key={p} onClick={() => { setActivePage(p === "Sublimation" ? "Sublimation" : "Products"); window.scrollTo({ top: 0 }); }}
-                style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, cursor: "pointer", transition: "color 0.2s" }}
-                onMouseEnter={e => e.target.style.color = GOLD}
-                onMouseLeave={e => e.target.style.color = "#555"}
-              >{p}</p>
-            ))}
-          </div>
-          <div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>Contact</p>
-            <a href="tel:0315373788" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>031 537 3788</a>
-            <a href="tel:0834436915" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>083 443 6915</a>
-            <a href={`mailto:${EMAIL}`} style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>{EMAIL}</a>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#555", marginBottom: 10 }}>{LOCATION}</p>
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#25D366", textDecoration: "none" }}>
-              <span>💬</span> WhatsApp Us
-            </a>
+            {/* Brighter, larger "BAG MANUFACTURERS" to meet client feedback */}
+            <div style={{ 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 10, 
+              letterSpacing: "0.35em", 
+              color: GOLD, 
+              fontWeight: 800 
+            }}>
+              BAG MANUFACTURERS
+            </div>
           </div>
         </div>
-
-        <div style={{ borderTop: `1px solid ${GOLD}12`, paddingTop: 18, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 10, flexDirection: isMobile ? "column" : "row", textAlign: "center", alignItems: "center" }}>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#3a3830", margin: 0 }}>
-            © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML). All rights reserved.
-          </p>
-          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#3a3830", margin: 0 }}>
-            Developed by{" "}
-            <a href="https://afribizconnect.co.za/" target="_blank" rel="noopener noreferrer"
-              style={{ color: GOLD, textDecoration: "none", fontWeight: 500, transition: "opacity 0.2s" }}
-              onMouseEnter={e => e.target.style.opacity = "0.8"}
-              onMouseLeave={e => e.target.style.opacity = "1"}
-            >Afribiz</a>
-          </p>
-        </div>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", lineHeight: 1.7, maxWidth: isMobile ? "100%" : 270 }}>
+          Premium custom bag manufacturers since 2003. 70 staff · SABS-tested · Verulam, KZN.
+        </p>
       </div>
-    </footer>
+
+      {/* Products & Services */}
+      <div>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>
+          Services
+        </p>
+        {["Conference Bags", "Cooler Bags", "School Bags", "Sublimation", "Shopping Bags"].map(p => (
+          <p key={p} 
+             onClick={() => { setActivePage(p === "Sublimation" ? "Sublimation" : "Products"); window.scrollTo({ top: 0 }); }} 
+             style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, cursor: "pointer", transition: "color 0.2s" }}
+             onMouseEnter={e => e.target.style.color = GOLD}
+             onMouseLeave={e => e.target.style.color = "#666"}
+          >
+            {p}
+          </p>
+        ))}
+      </div>
+
+      {/* Updated Contact Info */}
+      <div>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>
+          Contact
+        </p>
+        <a href="tel:0315373788" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#666"}>031 537 3788</a>
+        <a href="tel:0834436915" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#666"}>083 443 6915</a>
+        <a href="mailto:sales@rrmanufacturers.co.za" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#666"}>sales@rrmanufacturers.co.za</a>
+        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 10 }}>Verulam, KZN</p>
+        <a href={`https://wa.me/27834436915`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#25D366", textDecoration: "none" }}>
+          <span>💬</span> WhatsApp Us
+        </a>
+      </div>
+    </div>
+
+    {/* Bottom Bar - Copyright & Credits */}
+    <div style={{ 
+      borderTop: `1px solid ${GOLD}12`, 
+      paddingTop: 18, 
+      display: "flex", 
+      justifyContent: "space-between", 
+      flexWrap: "wrap", 
+      gap: 10, 
+      flexDirection: isMobile ? "column" : "row", 
+      textAlign: "center", 
+      alignItems: "center" 
+    }}>
+      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#444", margin: 0 }}>
+        © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML). All rights reserved.
+      </p>
+      
+      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#444", margin: 0 }}>
+        Developed by <a href="https://afribizconnect.co.za/" target="_blank" rel="noopener noreferrer" style={{ color: "#555", textDecoration: "none", fontWeight: 600, transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>Afribiz Connect</a>
+      </p>
+
+      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#444", margin: 0 }}>
+        Est. 2003 · SABS Standards
+      </p>
+    </div>
+  </div>
+</footer>
   );
 }
 
