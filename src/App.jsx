@@ -35,7 +35,7 @@ const DARK_WARM = "#1a1810";
 const EMAIL = "sales@rrmanufacturers.co.za";
 const LOCATION = "Verulam, KwaZulu-Natal";
 const LOCATION_SHORT = "Verulam, KZN";
-const WHATSAPP_NUMBER = "27834436915";
+const WHATSAPP_NUMBER = "27834681719";
 
 const PAGES = ["Home", "About", "Products", "Sublimation", "Gallery", "Values", "Contact"];
 
@@ -285,7 +285,7 @@ function Nav({ activePage, setActivePage }) {
   };
 
   const isMobile = w <= 768;
-  const logoH = w <= 480 ? 30 : 40;
+const logoH = w <= 480 ? 55 : 70;
 
   return (
     <nav style={{
@@ -300,7 +300,7 @@ function Nav({ activePage, setActivePage }) {
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: w <= 480 ? 8 : 12, cursor: "pointer", flexShrink: 0 }} onClick={() => goTo("Home")}>
-          <img src={logo} alt="RR Logo" style={{ height: logoH, width: "auto", objectFit: "contain", borderRadius: 4 }} />
+        <img src={logo} alt="RR Logo" style={{ height: logoH, width: "auto", objectFit: "contain", borderRadius: 4 }} />
           <div>
             <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 13 : 17, fontWeight: 800, color: "#fff", letterSpacing: "0.05em", lineHeight: 1.2 }}>RR PROMOTIONAL</div>
             {/* ── BRIGHTER "BAG MANUFACTURERS" text ── */}
@@ -828,7 +828,7 @@ function ContactPage() {
         {/* Contact details */}
         <div style={{ display: "flex", flexDirection: w <= 640 ? "column" : "row", gap: 16, justifyContent: "center", marginBottom: 24, opacity: inView ? 1 : 0, transition: "all 0.7s ease 0.1s" }}>
           {[
-            { icon: "📞", label: "Phone", val: "031 537 3788 / 083 443 6915", href: "tel:0315373788" },
+           { icon: "📞", label: "Phone", val: " 083 468 1719", href: "tel:0834681719" },
             { icon: "✉️", label: "Email", val: EMAIL, href: `mailto:${EMAIL}` },
             { icon: "📍", label: "Location", val: LOCATION, href: null },
           ].map(c => (
@@ -856,7 +856,7 @@ function ContactPage() {
             </svg>
             <div>
               <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 12, fontWeight: 700, color: "#25D366", margin: 0, letterSpacing: "0.1em" }}>WHATSAPP US</p>
-              <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 9 : 10, color: "#777", margin: 0 }}>083 443 6915 · Quick response</p>
+            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 9 : 10, color: "#777", margin: 0 }}>083 468 1719 · Quick response</p>
             </div>
           </a>
         </div>
@@ -983,132 +983,240 @@ function Footer({ setActivePage }) {
   const w = useWindowWidth();
   const isMobile = w <= 768;
 
-  return (
-   <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
-  <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-    {/* Scripture Section - Prayer of Jabez */}
-    <div style={{ 
-      background: "linear-gradient(135deg, #110e00, #0a0806)", 
-      border: `1px solid ${GOLD}28`, 
-      borderRadius: 6, 
-      padding: w <= 480 ? "24px 18px" : "44px 52px", 
-      marginBottom: w <= 480 ? 40 : 56, 
-      textAlign: "center", 
-      position: "relative" 
-    }}>
-      <div style={{ 
-        position: "absolute", top: -1, left: 48, right: 48, height: 2, 
-        background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` 
-      }} />
-      <Crown size={w <= 480 ? 24 : 34} />
-      <p style={{ 
-        fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : w <= 768 ? 16 : 18, lineHeight: 1.75, 
-        color: "#bbb", fontStyle: "italic", maxWidth: 700, margin: "18px auto 0" 
-      }}>
-        "And Jabez called on the God of Israel saying, 'Oh, that You would bless me indeed, and enlarge my territory, that Your hand would be with me, and that You would keep me from evil, that I may not cause pain!' So God granted him what he requested."
-      </p>
-      <p style={{ 
-        fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, letterSpacing: "0.2em", 
-        color: GOLD, marginTop: 16, textTransform: "uppercase" 
-      }}>
-        — 1 Chronicles 4:10 (NKJV)
-      </p>
-    </div>
+  // Client requested number: 083 468 1719
+  const PRIMARY_PHONE = "083 468 1719"; 
+  const OFFICE_PHONE = "27834681719";
+  const WHATSAPP_LINK = "27834681719";
 
-    {/* Footer Grid */}
-    <div style={{ 
-      display: "grid", 
-      gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", 
-      gap: isMobile ? 28 : 44, 
-      marginBottom: isMobile ? 28 : 44, 
-      textAlign: isMobile ? "center" : "left" 
-    }}>
-      {/* Brand & Address */}
-      <div>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, justifyContent: isMobile ? "center" : "flex-start" }}>
-          <img src={logo} alt="RR Logo" style={{ height: w <= 480 ? 32 : 40, width: "auto", objectFit: "contain", borderRadius: 4 }} />
+  return (
+    <footer style={{ background: "#080705", padding: w <= 480 ? "40px 4% 28px" : "70px 5% 36px" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        
+        {/* Scripture Section - Prayer of Jabez */}
+        <div style={{ 
+          background: "linear-gradient(135deg, #110e00, #0a0806)", 
+          border: `1px solid ${GOLD}28`, 
+          borderRadius: 6, 
+          padding: w <= 480 ? "24px 18px" : "44px 52px", 
+          marginBottom: w <= 480 ? 40 : 56, 
+          textAlign: "center", 
+          position: "relative" 
+        }}>
+          <div style={{ 
+            position: "absolute", top: -1, left: 48, right: 48, height: 2, 
+            background: `linear-gradient(to right, transparent, ${GOLD}, transparent)` 
+          }} />
+          <Crown size={w <= 480 ? 24 : 34} />
+          <p style={{ 
+            fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : w <= 768 ? 16 : 18, lineHeight: 1.75, 
+            color: "#bbb", fontStyle: "italic", maxWidth: 700, margin: "18px auto 0" 
+          }}>
+            "And Jabez called on the God of Israel saying, 'Oh, that You would bless me indeed, and enlarge my territory, that Your hand would be with me, and that You would keep me from evil, that I may not cause pain!' So God granted him what he requested."
+          </p>
+          <p style={{ 
+            fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, letterSpacing: "0.2em", 
+            color: GOLD, marginTop: 16, textTransform: "uppercase" 
+          }}>
+            — 1 Chronicles 4:10 (NKJV)
+          </p>
+        </div>
+
+        {/* Footer Grid */}
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr 1fr", 
+          gap: isMobile ? 28 : 44, 
+          marginBottom: isMobile ? 28 : 44, 
+          textAlign: isMobile ? "center" : "left" 
+        }}>
+          
+          {/* Brand & Identity - Logo container removed as requested */}
           <div>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: w <= 480 ? 14 : 16, fontWeight: 800, color: "#fff" }}>
-              RR PROMOTIONAL
-            </div>
-            {/* Brighter, larger "BAG MANUFACTURERS" to meet client feedback */}
             <div style={{ 
-              fontFamily: "'Montserrat', sans-serif", 
-              fontSize: 10, 
-              letterSpacing: "0.35em", 
-              color: GOLD, 
-              fontWeight: 800 
+              display: "flex", 
+              alignItems: "center", 
+              gap: 12, 
+              marginBottom: 14, 
+              justifyContent: isMobile ? "center" : "flex-start" 
             }}>
-              BAG MANUFACTURERS
+              <img 
+                src={logo} 
+                alt="RR Logo" 
+                style={{ 
+                  height: w <= 480 ? 50 : 65, // Increased height to maintain visibility without the white box
+                  width: "auto", 
+                  objectFit: "contain", 
+                  backgroundColor: "transparent", 
+                  padding: 0
+                }} 
+              />
+              <div>
+                <div style={{ 
+                  fontFamily: "'Playfair Display', serif", 
+                  fontSize: w <= 480 ? 16 : 20, 
+                  fontWeight: 800, 
+                  color: "#fff", 
+                  letterSpacing: "0.03em",
+                  lineHeight: 1.2
+                }}>
+                  RR PROMOTIONAL
+                </div>
+                <div style={{ 
+                  fontFamily: "'Montserrat', sans-serif", 
+                  fontSize: w <= 480 ? 10 : 12, 
+                  letterSpacing: "0.3em", 
+                  color: BAG_MFR_COLOR, 
+                  fontWeight: 900,
+                  textTransform: "uppercase",
+                  textShadow: "0 0 8px rgba(245, 215, 66, 0.4)"
+                }}>
+                  BAG MANUFACTURERS
+                </div>
+              </div>
             </div>
+            <p style={{ 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: w <= 480 ? 12 : 14, 
+              color: "#999", 
+              lineHeight: 1.7, 
+              maxWidth: isMobile ? "100%" : 280 
+            }}>
+              Premium custom bag manufacturers since 2003. <br />
+              70 staff · SABS-tested · Verulam, KZN.
+            </p>
+          </div>
+
+          {/* Navigation Links */}
+          <div>
+            <p style={{ 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 11, 
+              letterSpacing: "0.25em", 
+              color: GOLD, 
+              textTransform: "uppercase", 
+              marginBottom: 20,
+              fontWeight: 700
+            }}>
+              Quick Links
+            </p>
+            {["About", "Products", "Sublimation", "Gallery", "Contact"].map(p => (
+              <p key={p} 
+                onClick={() => { setActivePage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
+                style={{ 
+                  fontFamily: "'Montserrat', sans-serif", 
+                  fontSize: 14, 
+                  color: "#888", 
+                  marginBottom: 12, 
+                  cursor: "pointer", 
+                  transition: "color 0.2s" 
+                }}
+                onMouseEnter={e => e.target.style.color = GOLD}
+                onMouseLeave={e => e.target.style.color = "#888"}
+              >
+                {p}
+              </p>
+            ))}
+          </div>
+
+          {/* Contact Details - Prioritizing 083 number */}
+          <div>
+            <p style={{ 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 11,
+              letterSpacing: "0.25em", 
+              color: GOLD, 
+              textTransform: "uppercase", 
+              marginBottom: 20,
+              fontWeight: 700
+            }}>
+              Get In Touch
+            </p>
+            {/* <a href={`tel:${PRIMARY_PHONE.replace(/\s/g, '')}`} style={{ 
+              display: "block", 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 15, 
+              color: "#grey", 
+              marginBottom: 10, 
+              textDecoration: "none",
+              fontWeight: 600
+            }}>
+              📱 {PRIMARY_PHONE}
+            </a> */}
+            <a href={`tel:${OFFICE_PHONE.replace(/\s/g, '')}`} style={{ 
+              display: "block", 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 14, 
+              color: "#888", 
+              marginBottom: 14, 
+              textDecoration: "none"
+            }}>
+              📞 {OFFICE_PHONE}
+            </a>
+            <a href="mailto:sales@rrmanufacturers.co.za" style={{ 
+              display: "block", 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 13, 
+              color: "#888", 
+              marginBottom: 20, 
+              textDecoration: "none",
+              wordBreak: "break-all"
+            }}>
+              ✉️ sales@rrmanufacturers.co.za
+            </a>
+            <a href={`https://wa.me/${WHATSAPP_LINK}`} target="_blank" rel="noopener noreferrer" style={{ 
+              display: "inline-flex", 
+              alignItems: "center", 
+              gap: 8, 
+              fontFamily: "'Montserrat', sans-serif", 
+              fontSize: 13, 
+              color: "#25D366", 
+              textDecoration: "none",
+              fontWeight: 700,
+              background: "#25D36615",
+              padding: "10px 18px",
+              borderRadius: 4,
+              border: "1px solid #25D36640"
+            }}>
+              <span style={{ fontSize: 16 }}>💬</span> WhatsApp Chat
+            </a>
           </div>
         </div>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", lineHeight: 1.7, maxWidth: isMobile ? "100%" : 270 }}>
-          Premium custom bag manufacturers since 2003. 70 staff · SABS-tested · Verulam, KZN.
-        </p>
-      </div>
 
-      {/* Products & Services */}
-      <div>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>
-          Services
-        </p>
-        {["Conference Bags", "Cooler Bags", "School Bags", "Sublimation", "Shopping Bags"].map(p => (
-          <p key={p} 
-             onClick={() => { setActivePage(p === "Sublimation" ? "Sublimation" : "Products"); window.scrollTo({ top: 0 }); }} 
-             style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, cursor: "pointer", transition: "color 0.2s" }}
-             onMouseEnter={e => e.target.style.color = GOLD}
-             onMouseLeave={e => e.target.style.color = "#666"}
-          >
-            {p}
+        {/* Bottom Bar - Developed by Afribiz Connect */}
+        <div style={{ 
+          borderTop: `1px solid ${GOLD}15`, 
+          paddingTop: 24, 
+          display: "flex", 
+          justifyContent: "space-between", 
+          flexDirection: isMobile ? "column" : "row", 
+          gap: 16, 
+          textAlign: "center", 
+          alignItems: "center" 
+        }}>
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, color: "#555", margin: 0 }}>
+            © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML).
           </p>
-        ))}
+          
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 11, color: "#666", margin: 0 }}>
+            Developed by{" "}
+            <a 
+              href="https://afribizconnect.co.za/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: GOLD, textDecoration: "none", fontWeight: 600 }}
+            >
+              Afribiz Connect
+            </a>
+          </p>
+
+          <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, color: "#555", margin: 0 }}>
+            Est. 2003 · SABS Standards
+          </p>
+        </div>
       </div>
-
-      {/* Updated Contact Info */}
-      <div>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 10, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase", marginBottom: 14 }}>
-          Contact
-        </p>
-        <a href="tel:0315373788" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#666"}>031 537 3788</a>
-        <a href="tel:0834436915" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#666"}>083 443 6915</a>
-        <a href="mailto:sales@rrmanufacturers.co.za" style={{ display: "block", fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 8, textDecoration: "none" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#666"}>sales@rrmanufacturers.co.za</a>
-        <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 11 : 13, color: "#666", marginBottom: 10 }}>Verulam, KZN</p>
-        <a href={`https://wa.me/27834436915`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#25D366", textDecoration: "none" }}>
-          <span>💬</span> WhatsApp Us
-        </a>
-      </div>
-    </div>
-
-    {/* Bottom Bar - Copyright & Credits */}
-    <div style={{ 
-      borderTop: `1px solid ${GOLD}12`, 
-      paddingTop: 18, 
-      display: "flex", 
-      justifyContent: "space-between", 
-      flexWrap: "wrap", 
-      gap: 10, 
-      flexDirection: isMobile ? "column" : "row", 
-      textAlign: "center", 
-      alignItems: "center" 
-    }}>
-      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#444", margin: 0 }}>
-        © {new Date().getFullYear()} RR Promotional Bag Manufacturers (T/A RML). All rights reserved.
-      </p>
-      
-      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#444", margin: 0 }}>
-        Developed by <a href="https://afribizconnect.co.za/" target="_blank" rel="noopener noreferrer" style={{ color: "#555", textDecoration: "none", fontWeight: 600, transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = GOLD} onMouseLeave={e => e.target.style.color = "#555"}>Afribiz Connect</a>
-      </p>
-
-      <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: w <= 480 ? 10 : 11, color: "#444", margin: 0 }}>
-        Est. 2003 · SABS Standards
-      </p>
-    </div>
-  </div>
-</footer>
+    </footer>
   );
 }
-
 // ── Scroll To Top ─────────────────────────────────────────────────────────
 function ScrollToTop() {
   const [vis, setVis] = useState(false);
